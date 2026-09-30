@@ -1,0 +1,697 @@
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import './styles.css';
+
+const API = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'; window.__API = API;
+
+// ── Auth token stored in memory only ────────────────────────────────────────
+let _token = null;
+function setToken(t) { _token = t; window.__TOKEN = t; }
+function getToken() { return _token; }
+
+async function api(path, options = {}) {
+  const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+  if (getToken()) headers['Authorization'] = `Bearer ${getToken()}`;
+  const res = await fetch(`${API}${path}`, { ...options, headers });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'Request failed');
+  return data;
+}
+const fmtINR = (n) => `₹ ${Math.round(Number(n || 0)).toLocaleString('en-IN')}`;
+
+// ── Icons ────────────────────────────────────────────────────────────────────
+function BackIcon(){return <svg viewBox="0 0 64 64" className="backIcon" fill="none"><path d="M29 17 14 32l15 15" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round"/><path d="M17 32h20c8 0 13 5 13 13v2" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+function HomeIcon(){return <svg viewBox="0 0 64 64" className="homeIcon" fill="none"><path d="M14 31 32 16l18 15" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/><path d="M20 29v22h24V29" stroke="currentColor" strokeWidth="4" strokeLinejoin="round"/><path d="M27 51V39h10v12" stroke="currentColor" strokeWidth="4" strokeLinejoin="round"/></svg>}
+function LogoutIcon(){return <svg viewBox="0 0 64 64" className="logoutIcon" fill="none"><path d="M29 16H17v32h12" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/><path d="M35 23l9 9-9 9" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/><path d="M22 32h22" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/></svg>}
+function SearchIcon(){return <svg viewBox="0 0 64 64" className="searchIcon" fill="none"><circle cx="27" cy="27" r="14" stroke="currentColor" strokeWidth="4"/><path d="M38 38 51 51" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/></svg>}
+function FilterIcon(){return <svg viewBox="0 0 64 64" className="filterIcon" fill="none"><path d="M14 17h36L36 33v13l-8 4V33L14 17Z" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+function OutletIcon({className='outletSvg'}){return <svg viewBox="0 0 90 90" className={className} fill="none"><path d="M20 40h50v34H20V40Z" stroke="currentColor" strokeWidth="3.2" strokeLinejoin="round"/><path d="M16 39h58l-5-19H21l-5 19Z" stroke="currentColor" strokeWidth="3.2" strokeLinejoin="round"/><path d="M24 20v19M34 20v19M44 20v19M54 20v19M64 20v19" stroke="currentColor" strokeWidth="2.5"/><path d="M28 73V52h15v21M50 54h13v11H50V54Z" stroke="currentColor" strokeWidth="3" strokeLinejoin="round"/></svg>}
+function BarIcon({className='outletSvg'}){return <svg viewBox="0 0 90 90" className={className} fill="none"><path d="M19 31h52l-8 18H27L19 31Z" stroke="currentColor" strokeWidth="3.4" strokeLinejoin="round"/><path d="M45 49v22M32 71h26" stroke="currentColor" strokeWidth="3.4" strokeLinecap="round"/><path d="M30 20c7 8 23 8 30 0" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round"/><circle cx="58" cy="29" r="5" stroke="currentColor" strokeWidth="3"/><path d="M24 55h42" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/></svg>}
+function StockRoomIcon({className='outletSvg'}){return <svg viewBox="0 0 90 90" className={className} fill="none"><rect x="14" y="36" width="62" height="38" rx="3" stroke="currentColor" strokeWidth="3.2"/><path d="M14 36l31-22 31 22" stroke="currentColor" strokeWidth="3.2" strokeLinejoin="round"/><rect x="34" y="52" width="22" height="22" rx="2" stroke="currentColor" strokeWidth="3"/><path d="M45 52v22M26 46h8M56 46h8" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/></svg>}
+function ProductsIcon({className='dashIcon'}){return <svg viewBox="0 0 80 80" className={className} fill="none"><rect x="33" y="10" width="14" height="7" rx="3" stroke="currentColor" strokeWidth="3.2"/><path d="M30 17h20M26 28c-2 3-4 7-4 12v22c0 4 3 7 7 7h18c4 0 7-3 7-7V40c0-5-2-9-4-12l-2-5H28l-2 5Z" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M22 44h36" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/><path d="M30 54h20M30 62h14" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round"/></svg>}
+function Bottle({tone='orange',className='bottleSvg'}){return <svg viewBox="0 0 50 78" className={`${className} ${tone}`}><rect x="20" y="4" width="10" height="13" rx="2" fill="currentColor" opacity=".95"/><path d="M18 17h14l4 9v39c0 5-3 8-8 8h-6c-5 0-8-3-8-8V26l4-9Z" fill="currentColor" opacity=".25"/><path d="M18 17h14l4 9v39c0 5-3 8-8 8h-6c-5 0-8-3-8-8V26l4-9Z" stroke="currentColor" strokeWidth="2.5"/><rect x="17" y="37" width="16" height="20" rx="2" fill="currentColor" opacity=".55"/></svg>}
+function DashIcon({type}){ if(type==='inventory')return <svg viewBox="0 0 80 80" className="dashIcon" fill="none">{/* Box */}<path d="M10 28l16-14h18v36H10V28Z" stroke="currentColor" strokeWidth="3.2" strokeLinejoin="round"/><path d="M44 14l16 14v36H26V50" stroke="currentColor" strokeWidth="3.2" strokeLinejoin="round"/><path d="M10 28h18M44 14v14H28V14" stroke="currentColor" strokeWidth="3.2" strokeLinejoin="round"/><path d="M17 36h10M17 44h8" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round"/><rect x="11" y="22" width="8" height="6" rx="1" stroke="currentColor" strokeWidth="2.5"/>{/* Clipboard */}<rect x="42" y="24" width="26" height="34" rx="3" stroke="currentColor" strokeWidth="3.2"/><path d="M49 24v-4h12v4" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/><rect x="49" y="35" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="2.5"/><line x1="57" y1="37" x2="64" y2="37" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/><rect x="49" y="45" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="2.5"/><line x1="57" y1="47" x2="64" y2="47" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/><rect x="49" y="55" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="2.5"/><line x1="57" y1="57" x2="62" y2="57" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/></svg>; if(type==='outlet')return <OutletIcon className="dashIcon"/>; if(type==='report')return <svg viewBox="0 0 80 80" className="dashIcon" fill="none"><path d="M24 14h24l10 10v42H24V14Z" stroke="currentColor" strokeWidth="4" strokeLinejoin="round"/><path d="M47 14v12h11" stroke="currentColor" strokeWidth="4"/><path d="M34 56V42M42 56V32M50 56V48" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/></svg>; if(type==='subuser')return <svg viewBox="0 0 80 80" className="dashIcon" fill="none"><circle cx="34" cy="28" r="10" stroke="currentColor" strokeWidth="4"/><path d="M17 62c4-13 12-19 17-19s13 6 17 19" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/><path d="M58 29v18M49 38h18" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/></svg>; if(type==='history')return <svg viewBox="0 0 80 80" className="dashIcon" fill="none"><path d="M22 29a22 22 0 1 1-2 22" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/><path d="M20 18v14h14" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/><path d="M40 28v15l10 6" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/></svg>; return <ProductsIcon/>; }
+function Logo(){return <div className="logo"><b>SIROO</b></div>}
+function SearchBar({value,onChange,text,disabled}){return <label className={`searchWrap ${disabled?'disabled':''}`}><SearchIcon/><input disabled={disabled} value={value||''} onChange={(e)=>onChange?.(e.target.value)} placeholder={text}/></label>}
+function Select({label,value,onChange,options=[],disabled}){return <select className="selectBox" disabled={disabled} value={value||''} onChange={(e)=>onChange?.(e.target.value)}><option value="">{label}</option>{options.map(o=><option key={o.id||o._id||o} value={o.id||o._id||o}>{o.name||o}</option>)}</select>}
+function Shell({setPage,children,className=''}){return <div className="page"><div className="pageContent"><div className="topLine"><button className="backButton" onClick={()=>setPage('__BACK__')}><BackIcon/>Back</button><button className="homeButton" onClick={()=>setPage('dashboard')} style={{display:'flex',alignItems:'center',justifyContent:'center',padding:0}}><HomeIcon/></button></div><main className={`shell ${className}`}>{children}</main></div></div>}
+function Toast({msg}){return msg?<div className="toast">{msg}</div>:null}
+
+// ── Login Screen ─────────────────────────────────────────────────────────────
+function LoginPage({ onLogin }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState('');
+
+  async function handleLogin(e) {
+    e.preventDefault();
+    setErr(''); setLoading(true);
+    try {
+      const data = await fetch(`${API}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      }).then(async r => { const d = await r.json(); if (!r.ok) throw new Error(d.error || 'Login failed'); return d; });
+      setToken(data.token);
+      onLogin(data.user);
+    } catch (e) {
+      setErr(e.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="page loginPage">
+      <div className="pageContent loginContent">
+        <div className="loginCard">
+          <div className="loginLogo"><b>SIROO</b></div>
+          <p className="loginSub">Alcohol Inventory Management</p>
+          <form className="loginForm" onSubmit={handleLogin}>
+            <label className="loginField">
+              <span>Email Address</span>
+              <input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="owner@yourbar.com" required autoFocus/>
+            </label>
+            <label className="loginField">
+              <span>Password</span>
+              <input type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="••••••••" required/>
+            </label>
+            {err && <p className="loginErr">{err}</p>}
+            <button className="loginBtn" type="submit" disabled={loading}>
+              {loading ? 'Signing in…' : 'Sign In'}
+            </button>
+          </form>
+          <p className="loginFooter">Access provided by SIROO. Contact admin to get your credentials.</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Subscription Expired Screen ──────────────────────────────────────────────
+function SubscriptionExpired({ onLogout }) {
+  return (
+    <div className="page loginPage">
+      <div className="pageContent loginContent">
+        <div className="loginCard">
+          <div className="loginLogo"><b>SIROO</b></div>
+          <p className="loginSub" style={{color:'#ff6b35'}}>Subscription Expired</p>
+          <p style={{color:'#ffc181',textAlign:'center',lineHeight:1.7,margin:'18px 0 28px'}}>
+            Your SIROO subscription has expired.<br/>
+            Please contact SIROO support to renew your plan and regain access.
+          </p>
+          <button className="loginBtn" onClick={onLogout}>Sign Out</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Main App Pages (unchanged) ───────────────────────────────────────────────
+function Dashboard({setPage, user}){
+  const items=[['Inventory','inventory','inventory'],['Outlet','outlet','outlet'],['Report','report','report'],['Sub-User','subuser','subuser'],['History','history','history'],['Products','products','products']];
+  const role = user?.role || 'Owner';
+  return (
+    <div className="page dashboard">
+      <header>
+        <div className="profile">
+          <b className="profileBrand">{user?.brandName||'SIROO'}</b>
+          <span className="profileOwner">{user?.ownerName||'Owner'}</span>
+          <span className="profileRole">{role}</span>
+        </div>
+        <Logo/>
+        <button className="logout" onClick={()=>{ setToken(null); window.location.reload(); }}><LogoutIcon/>Logout</button>
+      </header>
+      <main className="dashGrid">
+        {items.map(([label,page,type])=>(
+          <button key={label} className="dashCard" onClick={()=>setPage(page)}>
+            <DashIcon type={type}/><span>{label}</span>
+          </button>
+        ))}
+      </main>
+    </div>
+  );
+}
+function OutletPage({setPage,outlets,setOutlet}){return <Shell setPage={setPage} className="outletShell"><h1>Outlets</h1><p className="sub">Select your outlet</p><div className="outletCards">{outlets.map(x=><button className="outletCard" key={x._id||x.id} onClick={()=>{setOutlet(x);setPage('barselect')}}><OutletIcon/><b>{x.name}</b></button>)}</div></Shell>}
+function BarSelect({setPage,selectedOutlet,setLocation}){return <Shell setPage={setPage} className="outletShell"><h1>{selectedOutlet?.name||'Select Outlet'}</h1><p className="sub">Select Stock Room or Bar</p><div className="barCards">{(selectedOutlet?.bars||[]).map(x=><button className="outletCard" key={x._id||x.id} onClick={()=>{setLocation(x);setPage('stock')}}>{x.type==='stockroom'?<StockRoomIcon/>:<BarIcon/>}<b>{x.name}</b></button>)}</div></Shell>}
+function StockPage({setPage,ctx,stock,stockSearch,setStockSearch}){const isStock=ctx.location?.type==='stockroom'; const filtered=stock.filter(x=>`${x.name} ${x.category}`.toLowerCase().includes(stockSearch.toLowerCase())); return <Shell setPage={setPage}><div className="header stockHeader"><div><h1>{ctx.location?.name}</h1><p>{ctx.outlet?.name} / {ctx.location?.name}</p></div><div className="actions stockActions">{isStock&&<><button onClick={()=>setPage('addStock')}>Add Stock</button><button onClick={()=>setPage('assign')}>Assign</button></>} {!isStock&&<><button onClick={()=>setPage('inventory')}>Inventory</button><button onClick={()=>setPage('transfer')}>Transfer</button></>}</div></div><SearchBar value={stockSearch} onChange={setStockSearch} text="Search for bottles, category or brand"/><section className="table stockTable"><div className="thead"><span>Brand / Bottle</span><span>Category</span><span>Bottle Size</span><span>Cost</span><span>Full Bottles</span><span>Open ML</span><span>Stock Value</span></div>{filtered.map(x=><div className="trow full" key={x.productId}><span>{x.name}</span><span>{x.category}</span><span>{x.bottleSizeMl} ML</span><span>{fmtINR(x.cost)}</span><span>{x.fullBottles}</span><span>{x.openMl}</span><span>{fmtINR(x.stockValue)}</span></div>)}</section></Shell>}
+
+function Inventory({setPage,outlets,products,recent,ctx,setOutlet,setLocation,refreshRecent,stock}){
+  const [q,setQ]=useState('');const [product,setProduct]=useState(null);const [remaining,setRemaining]=useState(0);const [empty,setEmpty]=useState('');const [manualMl,setManualMl]=useState('');const [device,setDevice]=useState({connected:false,message:'Not connected'});const [err,setErr]=useState('');
+  const enabled=Boolean(ctx.outlet&&ctx.location); const locations=ctx.outlet?.bars||[]; const suggestions=enabled&&q&&!product?products.filter(p=>`${p.name} ${p.category}`.toLowerCase().includes(q.toLowerCase())).slice(0,6):[]; const stockLine=product?stock.find(x=>(x.productId?.toString()===product._id?.toString()||x.productId?.toString()===product.id?.toString())):null; const openingFull=stockLine?.fullBottles??'-'; const openingOpen=stockLine?.openMl??'-';
+  const [scannerSeen, setScannerSeen] = useState(false);
+  const [scaleReading, setScaleReading] = useState(false);
+
+  // Poll scale status every 4s
+  useEffect(()=>{
+    function checkStatus(){ api('/scale/status').then(r=>setDevice(r)).catch(()=>setDevice({connected:false,message:'Bridge not reachable'})); }
+    checkStatus();
+    const t = setInterval(checkStatus, 4000);
+    return ()=>clearInterval(t);
+  },[]);
+
+  // Auto-read scale as soon as product is selected (if scale connected)
+  useEffect(()=>{
+    setRemaining(0); setEmpty(''); setManualMl('');
+    if(product && enabled && device.connected){ readScale(); }
+  },[product?._id, product?.id]);
+
+  async function readScale(){
+    if(!product||!enabled) return;
+    if(!device.connected){ setErr('Scale not connected. Enter ML manually.'); return; }
+    setScaleReading(true);
+    setErr('');
+    try{
+      const r = await api('/scale/read',{method:'POST',body:JSON.stringify({
+        productId:    product._id||product.id,
+        bottleSizeMl: product.bottleSizeMl,
+        emptyBottleWeightG: product.emptyBottleWeightG||0,
+      })});
+      if(r.simulated || !r.connected){
+        setDevice(d=>({...d,connected:false}));
+        setErr(r.message||'Scale not connected.');
+      } else {
+        setRemaining(Math.round(r.remainingMl||0));
+        setErr('');
+      }
+    }catch(e){ setErr('Scale error: '+e.message); }
+    finally{ setScaleReading(false); }
+  }
+  async function save(){ if(!product||!enabled)return; try{await api('/inventory/closing',{method:'POST',body:JSON.stringify({outletId:ctx.outlet._id||ctx.outlet.id,locationId:ctx.location._id?.toString()||ctx.location.id,productId:product._id||product.id,emptyBottles:Number(empty||0),remainingMl:Number(manualMl||remaining||0)})}); setProduct(null);setQ('');setRemaining(0);setEmpty('');setManualMl(''); refreshRecent?.(); setErr('Inventory saved successfully');}catch(e){setErr(e.message)} }
+  useHiddenBarcode((code)=>{
+    setScannerSeen(true);
+    if(!enabled)return;
+    const found=products.find(p=>p.barcode===code);
+    if(found){setProduct(found);setQ(found.name);setRemaining(0);}
+  });
+  const consumption=product&&manualMl!==''?Math.round(Number(empty||0)*product.bottleSizeMl+Math.max(0,product.bottleSizeMl-Number(manualMl||0))):null; const totalSell=consumption&&product?fmtINR(consumption*(Number(product.cost||0)/Number(product.bottleSizeMl||1))):'₹ 0';
+  return (
+    <div className="page">
+      <div className="pageContent">
+        <div className="topLine">
+          <button className="backButton" onClick={()=>setPage('__BACK__')}><BackIcon/>Back</button>
+          <button className="homeButton" onClick={()=>setPage('dashboard')} style={{display:'flex',alignItems:'center',justifyContent:'center',padding:0}}><HomeIcon/></button>
+        </div>
+        <main className={`shell inv ${!enabled?'locked':''}`}>
+          {/* Device Status — inside shell, no overlap */}
+          <div className="deviceFloating">
+            <span>Device Status</span>
+            <div className="deviceRows">
+              <div className="deviceRow"><span>Scale</span><b className={device.connected?'statusOn':'statusOff'}>{device.connected?'Connected':'Disconnected'}{device.error?<small title={device.error}> ⚠</small>:null}</b></div>
+              <div className="deviceRow"><span>Barcode Scanner</span><b className={scannerSeen?'statusOn':'statusOff'}>{scannerSeen?'Active':'Waiting'}</b></div>
+            </div>
+            <ConnectScaleBtn device={device} onResult={(r)=>{setDevice(r); setErr(r.connected?'':(r.error||'Scale not found.'));}}/>
+          </div>
+
+          <section className="invTop">
+            <div>
+              <h1>Inventory</h1>
+              <p>{ctx.outlet&&ctx.location?`${ctx.outlet.name} / ${ctx.location.name}`:'Select outlet and bar/stock room to take inventory.'}</p>
+              <label>Brand Name</label>
+              {product
+                ? <div className="selectedBottle"><Bottle/><div><b>{product.name}</b><span>{product.category} • {product.bottleSizeMl} ML</span><small>Opening: {openingFull} full, {openingOpen} ML open</small></div><button onClick={()=>{setProduct(null);setQ('')}}>Change</button></div>
+                : <><SearchBar disabled={!enabled} value={q} onChange={(v)=>{setQ(v);setProduct(null)}} text="Search brand name manually"/>
+                    {suggestions.length>0&&<div className="suggestions">{suggestions.map(p=><button key={p._id||p.id} onClick={()=>{setProduct(p);setQ(p.name);setRemaining(0)}}>{p.name} • {p.category} • {p.bottleSizeMl} ML</button>)}</div>}
+                    <p>Select or scan a product</p></>
+              }
+            </div>
+            <div className="rightTop">
+              <div className="selectRow">
+                <Select label="Select Outlet" value={ctx.outlet?._id||ctx.outlet?.id||''} onChange={(id)=>setOutlet(outlets.find(o=>(o._id||o.id)===id)||null)} options={outlets.map(o=>({...o,id:o._id||o.id}))}/>
+                <Select label="Select Bar / Stock Room" value={ctx.location?._id?.toString()||ctx.location?.id||''} onChange={(id)=>setLocation(locations.find(b=>(b._id?.toString()||b.id)===id)||null)} options={locations.map(b=>({...b,id:b._id?.toString()||b.id}))} disabled={!ctx.outlet}/>
+              </div>
+              <div className="remain">
+                <span>Remaining ML</span>
+                <b>{scaleReading?'Reading...':(product?`${remaining} ML`:'0 ML')}</b>
+                <button disabled={!product||!enabled||scaleReading} onClick={readScale}>{scaleReading?'Reading...':'Read Again'}</button>
+              </div>
+            </div>
+          </section>
+
+          <div className="metrics">
+            <div className="metricBox"><span>Opening Full Bottles</span><b>{product?openingFull:'-'}</b></div>
+            <div className="metricBox"><span>Opening Open Bottle ML</span><b>{product?openingOpen:'-'}</b></div>
+            <label className="metricBox inputMetric"><span>Empty Bottles</span><input disabled={!product||!enabled} value={empty} onChange={e=>setEmpty(e.target.value)} placeholder="Type empty bottles"/></label>
+            <label className="metricBox inputMetric"><span>One Open Bottle Remaining ML</span><input disabled={!product||!enabled} value={manualMl} onChange={e=>setManualMl(e.target.value)} placeholder="Type remaining ML"/></label>
+            <div className="metricBox"><span>Total Consumption</span><b>{consumption!==null?`${consumption} ML`:'-'}</b></div>
+            <div className="metricBox"><span>Total Sell</span><b>{consumption!==null?totalSell:'₹ 0'}</b></div>
+          </div>
+
+          <div className="bottomActions">
+            <button disabled={!product||!enabled} onClick={save}>Save and Read Next</button>
+            <button disabled={!product||!enabled} onClick={()=>{setProduct(null);setQ('');setRemaining(0);setEmpty('');setManualMl('')}}>Discard</button>
+          </div>
+          {err&&<p className="inlineMsg">{err}</p>}
+
+          <hr/>
+          <h2>Recent Inventory</h2>
+          <section className="recentTable">
+            <div className="recentHead">
+              <span>Brand</span><span>Op. Full</span><span>Op. Open ML</span>
+              <span>Empty Btl</span><span>Cl. Open ML</span>
+              <span>Consumption</span><span>Total Sell</span><span>Time</span>
+            </div>
+            {recent.map(r=>(
+              <div className="recentRow" key={r._id||r.id}>
+                <span>{r.productName||'-'}</span>
+                <span>{r.openingFullBottles??'-'}</span>
+                <span>{r.openingOpenMl??'-'}</span>
+                <span>{r.emptyBottles??'-'}</span>
+                <span>{r.remainingMl??'-'}</span>
+                <span>{r.consumedMl!=null?r.consumedMl+' ML':'-'}</span>
+                <span>{r.totalSell?fmtINR(r.totalSell):'₹ 0'}</span>
+                <span>{new Date(r.at).toLocaleTimeString()}</span>
+              </div>
+            ))}
+          </section>
+        </main>
+      </div>
+    </div>
+  );
+}
+
+function ConnectScaleBtn({device, onResult}){
+  const [scanning, setScanning] = React.useState(false);
+  async function connect(){
+    setScanning(true);
+    try{
+      const r = await fetch((window.__API||'http://localhost:5000/api')+'/scale/connect',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+(window.__TOKEN||'')}
+      }).then(x=>x.json());
+      onResult(r);
+    }catch(e){ onResult({connected:false,error:'Scale bridge not reachable. Make sure siroo_scale_bridge.py is running.'}); }
+    setScanning(false);
+  }
+  return <button onClick={connect} disabled={scanning} style={{opacity:scanning?0.7:1}}>
+    {scanning?'Scanning... (up to 15s)':'Connect Scale'}
+  </button>;
+}
+
+function useHiddenBarcode(onCode){ const buffer=useRef(''); const timer=useRef(null); useEffect(()=>{const h=(e)=>{ if(e.target?.tagName==='INPUT'||e.target?.tagName==='TEXTAREA')return; if(e.key==='Enter'){ const code=buffer.current.trim(); buffer.current=''; if(code.length>3)onCode(code); return;} if(e.key.length===1){ buffer.current+=e.key; clearTimeout(timer.current); timer.current=setTimeout(()=>{buffer.current=''},120); }}; window.addEventListener('keydown',h); return()=>window.removeEventListener('keydown',h);},[onCode]);}
+
+function Products({setPage,products,master,loadProducts}){const [q,setQ]=useState('');const [cat,setCat]=useState('');const [showAdd,setShowAdd]=useState(false);const [masterQ,setMasterQ]=useState('');const [masterId,setMasterId]=useState('');const [cost,setCost]=useState('');const [edit,setEdit]=useState(null);const [menu,setMenu]=useState(null);const [msg,setMsg]=useState('');const cats=[...new Set(products.map(p=>p.category))];const rows=products.filter(p=>(!q||`${p.name} ${p.category}`.toLowerCase().includes(q.toLowerCase()))&&(!cat||p.category===cat)); const masterRows=master.filter(m=>`${m.name} ${m.category}`.toLowerCase().includes(masterQ.toLowerCase())&&!products.some(p=>p.masterBottleId?.toString()===m._id?.toString())).slice(0,8); async function add(){setMsg(''); if(!masterId)return setMsg('Search and select a bottle first'); if(!Number(cost))return setMsg('Bottle price is compulsory'); try{await api('/user-products',{method:'POST',body:JSON.stringify({masterBottleId:masterId,cost})}); setShowAdd(false);setMasterId('');setMasterQ('');setCost('');loadProducts();}catch(e){setMsg(e.message)}} async function saveEdit(){try{await api(`/user-products/${edit._id||edit.id}`,{method:'PUT',body:JSON.stringify({cost:edit.cost,active:edit.active})});setEdit(null);loadProducts();}catch(e){setMsg(e.message)}} async function del(p){if(!confirm(`Delete ${p.name}?`))return; try{await api(`/user-products/${p._id||p.id}`,{method:'DELETE'});setMenu(null);loadProducts();}catch(e){setMsg(e.message)}}
+  return <Shell setPage={setPage}><div className="header"><div><h1>Products</h1><p>Manage all bottles, brands and product value in one place.</p></div><button className="addBtn" onClick={()=>setShowAdd(true)}>Add Brand / Bottle</button></div><div className="toolbar productToolbar"><SearchBar value={q} onChange={setQ} text="Search by bottle, brand or category..."/><Select label="All Categories" value={cat} onChange={setCat} options={cats}/><button className="filterBtn" onClick={()=>setMsg(`Filter applied${cat?`: ${cat}`:''}`)}><FilterIcon/></button></div>{msg&&<p className="inlineMsg">{msg}</p>}{showAdd&&<div className="modal"><div className="addBottleModal"><div className="addBottleModalHead"><h2>Add Brand / Bottle</h2><button className="modalClose" onClick={()=>{setShowAdd(false);setMsg('')}}>×</button></div><p className="addBottleModalSub">Search the admin bottle database, select a bottle, then enter your price.</p><div className="addBottleSearch"><label>Search Bottle</label><SearchBar value={masterQ} onChange={(v)=>{setMasterQ(v);setMasterId('')}} text="Search by brand name or category..."/>{masterQ&&<div className="modalList">{masterRows.length?masterRows.map(m=><button key={m._id||m.id} onClick={()=>{setMasterId(m._id||m.id);setMasterQ(`${m.name} • ${m.bottleSizeMl}ML`)}} className={masterId===(m._id||m.id)?'selected':''}><div className="modalBottleRow"><Bottle tone="orange"/><div><b>{m.name}</b><small>{m.category} • {m.bottleSizeMl} ML • Barcode: {m.barcode}</small></div>{masterId===(m._id||m.id)&&<span className="checkmark">✓</span>}</div></button>):<span className="noResults">No bottle found or already added</span>}</div>}</div><div className="addBottlePrice"><label>Your Bottle Cost <span style={{color:'#ff6b35'}}>*</span></label><input placeholder="Enter price (₹)" value={cost} onChange={e=>setCost(e.target.value)} type="number" min="1"/></div>{msg&&<p className="inlineMsg">{msg}</p>}<div className="addBottleActions"><button className="addBottleSave" disabled={!masterId||!Number(cost)} onClick={add}>Save Product</button><button className="addBottleCancel" onClick={()=>{setShowAdd(false);setMsg('');setMasterId('');setMasterQ('');setCost('')}}>Cancel</button></div></div></div>}{edit&&<div className="modal"><div><h2>Edit Product</h2><p>{edit.name}</p><input value={edit.cost} onChange={e=>setEdit({...edit,cost:e.target.value})}/><button onClick={saveEdit}>Save</button><button onClick={()=>setEdit(null)}>Cancel</button></div></div>}<section className="productTable"><div className="prodHead"><span>Bottle / Brand</span><span>Category</span><span>Size</span><span>Cost</span><span>Status</span><span>•••</span></div>{rows.map(p=><div className="prodRow" key={p._id||p.id}><div><span className="bottleThumb"><Bottle/></span><b>{p.name}</b><small>{p.bottleSizeMl} ML</small></div><span>{p.category}</span><span>{p.bottleSizeMl}</span><span>{fmtINR(p.cost)}</span><span>{p.active?'Active':'Inactive'}</span><span className="dotWrap"><button onClick={()=>setMenu(menu===(p._id||p.id)?null:(p._id||p.id))}>•••</button>{menu===(p._id||p.id)&&<div className="dotMenu"><button onClick={()=>setEdit(p)}>Edit Price</button><button onClick={()=>del(p)}>Delete Bottle</button></div>}</span></div>)}</section></Shell>}
+
+function Report({setPage, outlets, products}){
+  const [filters, setFilters] = React.useState({ outletId:'', locationId:'', productId:'', type:'', dateFrom:'', dateTo:'', q:'' });
+  const [rows,    setRows]    = React.useState([]);
+  const [stats,   setStats]   = React.useState({});
+  const [loading, setLoading] = React.useState(false);
+  const [fetched, setFetched] = React.useState(false);
+
+  const setF = (k,v) => setFilters(f=>({...f,[k]:v}));
+
+  const outletBars = filters.outletId
+    ? (outlets.find(o=>(o._id||o.id)===filters.outletId)?.bars || [])
+    : [];
+
+  async function fetchReport(){
+    setLoading(true);
+    try{
+      const params = new URLSearchParams();
+      if(filters.outletId)   params.set('outletId',   filters.outletId);
+      if(filters.locationId) params.set('locationId', filters.locationId);
+      if(filters.productId)  params.set('productId',  filters.productId);
+      if(filters.type)       params.set('type',       filters.type);
+      if(filters.dateFrom)   params.set('dateFrom',   filters.dateFrom);
+      if(filters.dateTo)     params.set('dateTo',     filters.dateTo);
+      const data = await api('/reports?'+params.toString());
+      setRows(data.rows||[]);
+      setStats({totalConsumption:data.totalConsumption||0, totalSell:data.totalSell||0, stockValue:data.stockValue||0});
+      setFetched(true);
+    }catch(e){ alert(e.message); }
+    setLoading(false);
+  }
+
+  function clearFilters(){
+    setFilters({outletId:'',locationId:'',productId:'',type:'',dateFrom:'',dateTo:'',q:''});
+    setRows([]); setFetched(false);
+  }
+
+  const ACTION_LABEL = {
+    closing:'Closing', opening:'Opening', ADD_STOCK:'Add Stock',
+    ASSIGN:'Assign', TRANSFER:'Transfer', INVENTORY_CLOSING:'Closing',
+    NO_INVENTORY_TAKEN:'No Inventory',
+  };
+
+  const displayed = filters.q
+    ? rows.filter(r=>(r.productName||'').toLowerCase().includes(filters.q.toLowerCase()))
+    : rows;
+
+  function exportCsv(){
+    const headers = ['Date/Time','Outlet','Bar/Stock Room','Brand/Bottle','Category','Bottle Size','Opening Full','Opening Open ML','Closing Full','Closing Open ML','Consumption ML','Total Sell','Action Type'];
+    const esc = v => '"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+    const csvRows = displayed.map(r=>[
+      new Date(r.at).toLocaleString(),
+      r.outletName||'', r.locationName||'', r.productName||'',
+      r.category||'', r.bottleSizeMl||'',
+      r.openingFullBottles??'', r.openingOpenMl??'',
+      r.closingFullBottles??'', r.closingOpenMl??'',
+      (r.consumedMl??r.quantity)||'', r.totalSell||'',
+      ACTION_LABEL[r.type||r.action]||r.type||r.action||'',
+    ].map(esc).join(','));
+    const csv = [headers.join(','),...csvRows].join('\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+    a.download = 'siroo-report.csv';
+    a.click();
+  }
+
+  return (
+    <Shell setPage={setPage}>
+      <div className="header">
+        <div><h1>Report</h1><p>Apply filters and click Generate Report to view data.</p></div>
+        {fetched && <button className="addBtn" onClick={exportCsv}>Export CSV</button>}
+      </div>
+
+      <div className="reportFiltersGrid">
+        <div className="filterGroup">
+          <label>Outlet</label>
+          <select value={filters.outletId} onChange={e=>{setF('outletId',e.target.value);setF('locationId','');}}>
+            <option value="">All Outlets</option>
+            {outlets.map(o=><option key={o._id||o.id} value={o._id||o.id}>{o.name}</option>)}
+          </select>
+        </div>
+        <div className="filterGroup">
+          <label>Bar / Stock Room</label>
+          <select value={filters.locationId} onChange={e=>setF('locationId',e.target.value)} disabled={!filters.outletId}>
+            <option value="">All Locations</option>
+            {outletBars.map(b=><option key={b._id?.toString()||b.id} value={b._id?.toString()||b.id}>{b.name}</option>)}
+          </select>
+        </div>
+        <div className="filterGroup">
+          <label>Product / Brand</label>
+          <select value={filters.productId} onChange={e=>setF('productId',e.target.value)}>
+            <option value="">All Products</option>
+            {products.map(p=><option key={p._id||p.id} value={p._id||p.id}>{p.name} ({p.bottleSizeMl}ml)</option>)}
+          </select>
+        </div>
+        <div className="filterGroup">
+          <label>Report Type</label>
+          <select value={filters.type} onChange={e=>setF('type',e.target.value)}>
+            <option value="">All Types</option>
+            <option value="closing">Closing Inventory</option>
+            <option value="opening">Opening Inventory</option>
+            <option value="ADD_STOCK">Add Stock</option>
+            <option value="ASSIGN">Assign Inventory</option>
+            <option value="TRANSFER">Transfer</option>
+          </select>
+        </div>
+        <div className="filterGroup">
+          <label>Date From</label>
+          <input type="date" value={filters.dateFrom} onChange={e=>setF('dateFrom',e.target.value)}/>
+        </div>
+        <div className="filterGroup">
+          <label>Date To</label>
+          <input type="date" value={filters.dateTo} onChange={e=>setF('dateTo',e.target.value)}/>
+        </div>
+        <div className="filterGroup">
+          <label>Search Brand</label>
+          <label className="searchWrap"><SearchIcon/><input value={filters.q} onChange={e=>setF('q',e.target.value)} placeholder="Search brand name..."/></label>
+        </div>
+      </div>
+
+      <div className="reportActions">
+        <button className="generateBtn" onClick={fetchReport} disabled={loading}>
+          {loading ? 'Generating...' : 'Generate Report'}
+        </button>
+        {fetched && <button className="clearBtn" onClick={clearFilters}>Clear</button>}
+      </div>
+
+      {fetched && (
+        <div className="stats reportStats">
+          <div><span>Total Consumption</span><b>{stats.totalConsumption||0} ML</b></div>
+          <div><span>Total Sell</span><b>{fmtINR(stats.totalSell)}</b></div>
+          <div><span>Stock Value</span><b>{fmtINR(stats.stockValue)}</b></div>
+          <div><span>Entries</span><b>{displayed.length}</b></div>
+        </div>
+      )}
+
+      {fetched && displayed.length === 0 && (
+        <p className="noData">No records found for the selected filters.</p>
+      )}
+
+      {fetched && displayed.length > 0 && (
+        <div className="reportTableWrap">
+          <div className="reportTable">
+            <div className="reportHead">
+              <span>Date / Time</span><span>Outlet</span><span>Bar / Location</span>
+              <span>Brand / Bottle</span><span>Category</span><span>Size</span>
+              <span>Op. Full</span><span>Op. Open ML</span>
+              <span>Cl. Full</span><span>Cl. Open ML</span>
+              <span>Consumption</span><span>Total Sell</span><span>Type</span>
+            </div>
+            {displayed.map(r=>(
+              <div className="reportRow" key={r._id||r.id}>
+                <span>{new Date(r.at).toLocaleString()}</span>
+                <span>{r.outletName||'-'}</span>
+                <span>{r.locationName||'-'}</span>
+                <span>{r.productName||'-'}</span>
+                <span>{r.category||'-'}</span>
+                <span>{r.bottleSizeMl ? r.bottleSizeMl+'ml' : '-'}</span>
+                <span>{r.openingFullBottles??'-'}</span>
+                <span>{r.openingOpenMl??'-'}</span>
+                <span>{r.closingFullBottles??'-'}</span>
+                <span>{r.closingOpenMl??'-'}</span>
+                <span>{r.consumedMl!=null ? r.consumedMl+' ML' : (r.quantity ? r.quantity+' btl' : '-')}</span>
+                <span>{r.totalSell ? fmtINR(r.totalSell) : '-'}</span>
+                <span className="typePill">{ACTION_LABEL[r.type||r.action]||r.type||r.action||'-'}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {!fetched && !loading && (
+        <div className="reportEmpty">
+          <p>Select your filters above and click <b>Generate Report</b> to view inventory data.</p>
+        </div>
+      )}
+    </Shell>
+  );
+}
+function SubUser({setPage,users}){const [sel,setSel]=useState(0);const u=users[sel]||{};return <Shell setPage={setPage}><div className="header"><div><h1>Sub-User</h1><p>Click any user card to view access and details.</p></div><button className="addBtn">+ Add User</button></div><div className="cardDetail"><div className="userGrid">{users.map((x,i)=><button key={x._id||x.id} className={`userCard ${i===sel?'selected':''}`} onClick={()=>setSel(i)}><div className="avatar">👤</div><b>{x.name}</b><span>{x.role}</span><small>{x.outletAccess?.join(', ')} • {x.status}</small></button>)}</div><aside className="detail"><h2>User Details</h2>{[['Name',u.name],['Mobile',u.phone],['Role',u.role],['Outlet Access',u.outletAccess?.join(', ')],['Bar Access',u.barAccess?.join(', ')],['Status',u.status],['Last Active',u.lastActive]].map(x=><p key={x[0]}><span>{x[0]}</span><b>{x[1]}</b></p>)}</aside></div></Shell>}
+
+function Transfer({setPage,ctx,products,assign,refreshStock}){
+  const [from,setFrom]=useState('');const [to,setTo]=useState('');const [productId,setProduct]=useState('');const [q,setQ]=useState('');const [qty,setQty]=useState(1);const [msg,setMsg]=useState('');const [msgType,setMsgType]=useState('');
+  const [assignHistory,setAssignHistory]=useState([]);
+  const stockRoom=ctx.outlet?.bars?.find(b=>b.type==='stockroom');
+  const bars=ctx.outlet?.bars?.filter(b=>b.type==='bar')||[];
+  const locs=ctx.outlet?.bars||[];
+  const p=products.find(x=>(x._id||x.id)===productId);
+  const suggestions=q&&!p?products.filter(p=>`${p.name} ${p.category}`.toLowerCase().includes(q.toLowerCase())).slice(0,6):[];
+  const toBar=bars.find(b=>(b._id?.toString()||b.id)===to);
+  async function confirm(){
+    setMsg('');
+    try{
+      const srId=stockRoom?._id?.toString()||stockRoom?.id;
+      if(assign) await api('/stock/assign',{method:'POST',body:JSON.stringify({outletId:ctx.outlet._id||ctx.outlet.id,fromStockRoomId:srId,toBarId:to,productId,quantity:qty})});
+      else await api('/stock/transfer',{method:'POST',body:JSON.stringify({outletId:ctx.outlet._id||ctx.outlet.id,fromLocationId:from,toLocationId:to,productId,quantity:qty})});
+      refreshStock?.();
+      if(assign){
+        // Stay on page — add to history, reset form
+        setAssignHistory(h=>[{id:Date.now(),name:p?.name||'',qty,toBar:toBar?.name||to,time:new Date().toLocaleTimeString()},...h].slice(0,8));
+        setMsgType('success'); setMsg(`✓ ${qty} bottle(s) of ${p?.name} assigned to ${toBar?.name||to}`);
+        setProduct('');setQ('');setQty(1);setTo('');
+      } else {
+        setMsgType('success'); setMsg('Stock transferred successfully');
+        setTimeout(()=>setPage('stock'),800);
+      }
+    }catch(e){setMsgType('error');setMsg(e.message||'Failed.');}
+  }
+  return <Shell setPage={setPage}>
+    <h1>{assign?'Assign Inventory':'Transfer Stock'}</h1>
+    <p>{assign?'Assign bottles from stock room to a bar. You can assign multiple times without leaving this page.':'Transfer stock between bars or back to stock room.'}</p>
+    {msg&&<p className={`inlineMsg ${msgType}`}>{msg}</p>}
+    <section className="transferGrid">
+      <div className="formPanel">
+        {assign?<>
+          <label>From Stock Room</label>
+          <button className="field">{stockRoom?.name||'Stock Room'}</button>
+          <label>Assign To Bar</label>
+          <Select label="Select Bar" value={to} onChange={setTo} options={bars.map(b=>({...b,id:b._id?.toString()||b.id}))}/>
+        </>:<>
+          <label>From Bar / Location</label>
+          <Select label="From" value={from} onChange={setFrom} options={locs.map(b=>({...b,id:b._id?.toString()||b.id}))}/>
+          <label>To Bar / Stock Room</label>
+          <Select label="To" value={to} onChange={setTo} options={locs.map(b=>({...b,id:b._id?.toString()||b.id}))}/>
+        </>}
+        <label>{assign?'Search Bottle From Stock Room':'Search Bottle'}</label>
+        {p?<div className="selectedBottle compact"><Bottle/><div><b>{p.name}</b><span>{p.category} • {p.bottleSizeMl} ML</span></div><button onClick={()=>{setProduct('');setQ('')}}>Change</button></div>
+          :<><SearchBar value={q} onChange={setQ} text="Search bottle"/>{suggestions.length>0&&<div className="suggestions">{suggestions.map(x=><button key={x._id||x.id} onClick={()=>{setProduct(x._id||x.id);setQ(x.name)}}>{x.name} • {x.category}</button>)}</div>}</>}
+        <label>Number of Bottles</label>
+        <div className="quantity"><button onClick={()=>setQty(Math.max(1,qty-1))}>−</button><span>{qty}</span><button onClick={()=>setQty(qty+1)}>+</button></div>
+        <label>Reason <small style={{color:'rgba(255,255,255,.4)'}}>(optional)</small></label>
+        <textarea placeholder="Optional reason" style={{minHeight:64,borderRadius:10,border:'1px solid rgba(201,107,25,.42)',background:'rgba(0,0,0,.35)',color:'white',padding:12}}/>
+      </div>
+      <aside className="summary">
+        {assign
+          ? <><h2>Recent Assigns</h2>
+              {assignHistory.length===0
+                ? <p style={{color:'rgba(255,193,129,.5)',fontSize:14}}><span>No assigns yet this session</span><b>—</b></p>
+                : assignHistory.map(x=><p key={x.id}><span>{x.name} → {x.toBar}</span><b>{x.qty} btl</b><small style={{gridColumn:'1/3',color:'#ffc181',fontSize:12}}>{x.time}</small></p>)
+              }</>
+          : <><h2>Transfer Summary</h2>
+              <div className="sumBottle"><Bottle/><b>{p?.name||'Select Bottle'}</b></div>
+              <p><span>Bottles</span><b>{qty}</b></p>
+              <p><span>Est. Value</span><b>{fmtINR((p?.cost||0)*qty)}</b></p></>
+        }
+      </aside>
+    </section>
+    <button disabled={!productId||!to||(!assign&&!from)} className="confirm" onClick={confirm}>{assign?'Confirm Assign':'Confirm Transfer'}</button>
+  </Shell>;
+}
+
+function AddStock({setPage,ctx,products,refreshStock}){const [productId,setProduct]=useState('');const [q,setQ]=useState('');const [qty,setQty]=useState('');const [recent,setRecent]=useState([]);const [msg,setMsg]=useState(''); const p=products.find(x=>(x._id||x.id)===productId); const suggestions=q&&!p?products.filter(p=>`${p.name} ${p.category}`.toLowerCase().includes(q.toLowerCase())).slice(0,8):[]; async function save(){setMsg(''); try{ if(!productId)return setMsg('Search and select a bottle'); if(!Number(qty))return setMsg('Enter quantity'); const locId=ctx.location?._id?.toString()||ctx.location?.id; await api('/stock/add',{method:'POST',body:JSON.stringify({outletId:ctx.outlet._id||ctx.outlet.id,locationId:locId,productId,quantity:Number(qty)})}); setRecent(r=>[{id:Date.now(),name:p.name,qty,time:new Date().toLocaleTimeString()},...r].slice(0,6)); setProduct('');setQ('');setQty(''); refreshStock(); setMsg('Stock added successfully');}catch(e){setMsg(e.message)} } return <Shell setPage={setPage}><h1>Add Stock</h1><p>Stock can be added only to Stock Room.</p>{msg&&<p className="inlineMsg">{msg}</p>}<div className="addStockGrid"><div className="formPanel"><label>Search Bottle</label>{p?<div className="selectedBottle compact"><Bottle/><div><b>{p.name}</b><span>{p.category} • {p.bottleSizeMl} ML</span></div><button onClick={()=>{setProduct('');setQ('')}}>Change</button></div>:<><SearchBar value={q} onChange={setQ} text="Search bottle from product list"/>{suggestions.length>0&&<div className="suggestions">{suggestions.map(x=><button key={x._id||x.id} onClick={()=>{setProduct(x._id||x.id);setQ(x.name)}}>{x.name} • {x.category} • {x.bottleSizeMl} ML</button>)}</div>}</>}<label>Quantity</label><input value={qty} onChange={e=>setQty(e.target.value)} placeholder="Full bottles"/><button className="confirm" onClick={save}>Add Stock</button></div><aside className="summary recentAdd"><h2>Recently Added Stock</h2>{recent.length?recent.map(x=><p key={x.id}><span>{x.name}</span><b>{x.qty} bottle(s)</b><small>{x.time}</small></p>):<p><span>No recent stock added yet</span><b>-</b></p>}</aside></div></Shell>}
+
+// ── History Page ─────────────────────────────────────────────────────────────
+function HistoryPage({ setPage, history = [], outlets = [] }) {
+  const [search, setSearch]       = useState('');
+  const [outletId, setOutletId]   = useState('');
+  const [actionFilter, setAction] = useState('');
+  const [dateFrom, setDateFrom]   = useState('');
+  const [dateTo,   setDateTo]     = useState('');
+
+  const ACTION_LABEL = {
+    closing:'Closing Inventory', opening:'Opening Inventory',
+    ADD_STOCK:'Add Stock', ASSIGN:'Assign', TRANSFER:'Transfer',
+    INVENTORY_CLOSING:'Closing', NO_INVENTORY_TAKEN:'No Inventory',
+  };
+
+  const ACTION_COLOR = {
+    closing:'pill-blue', opening:'pill-green', ADD_STOCK:'pill-orange',
+    ASSIGN:'pill-purple', TRANSFER:'pill-teal',
+    INVENTORY_CLOSING:'pill-blue', NO_INVENTORY_TAKEN:'pill-gray',
+  };
+
+  const filtered = history.filter(r => {
+    if (outletId && r.outletId !== outletId && r.outlet?._id !== outletId) return false;
+    if (actionFilter && (r.type || r.action) !== actionFilter) return false;
+    if (search && !(r.productName || '').toLowerCase().includes(search.toLowerCase()) &&
+        !(r.outletName || '').toLowerCase().includes(search.toLowerCase())) return false;
+    if (dateFrom && new Date(r.at) < new Date(dateFrom)) return false;
+    if (dateTo   && new Date(r.at) > new Date(dateTo + 'T23:59:59')) return false;
+    return true;
+  });
+
+  const actionTypes = [...new Set(history.map(r => r.type || r.action).filter(Boolean))];
+
+  return (
+    <Shell setPage={setPage}>
+      <div className="header">
+        <div><h1>History</h1><p>Full audit trail of all inventory actions.</p></div>
+        <span className="histCount">{filtered.length} record{filtered.length !== 1 ? 's' : ''}</span>
+      </div>
+
+      {/* Filters */}
+      <div className="histFiltersRow">
+        <label className="searchWrap">
+          <SearchIcon/>
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search product or outlet…"/>
+        </label>
+        <select value={outletId} onChange={e => setOutletId(e.target.value)}>
+          <option value="">All Outlets</option>
+          {outlets.map(o => <option key={o._id||o.id} value={o._id||o.id}>{o.name}</option>)}
+        </select>
+        <select value={actionFilter} onChange={e => setAction(e.target.value)}>
+          <option value="">All Actions</option>
+          {actionTypes.map(t => <option key={t} value={t}>{ACTION_LABEL[t] || t}</option>)}
+        </select>
+        <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} title="From date"/>
+        <input type="date" value={dateTo}   onChange={e => setDateTo(e.target.value)}   title="To date"/>
+        {(search||outletId||actionFilter||dateFrom||dateTo) &&
+          <button className="clearBtn" onClick={()=>{setSearch('');setOutletId('');setAction('');setDateFrom('');setDateTo('');}}>Clear</button>}
+      </div>
+
+      {/* Records */}
+      {history.length === 0 && (
+        <div className="reportEmpty"><p>No history records found. History is recorded as inventory actions are performed.</p></div>
+      )}
+
+      {history.length > 0 && filtered.length === 0 && (
+        <p className="noData">No records match the selected filters.</p>
+      )}
+
+      {filtered.length > 0 && (
+        <div className="histList">
+          {filtered.map((r, i) => {
+            const key  = r._id || r.id || i;
+            const type = r.type || r.action || '';
+            const label = ACTION_LABEL[type] || type || '—';
+            const color = ACTION_COLOR[type] || 'pill-gray';
+            const date  = r.at ? new Date(r.at) : null;
+            return (
+              <div className="histCard" key={key}>
+                <div className="histCardLeft">
+                  <span className={`typePill ${color}`}>{label}</span>
+                  <b className="histProduct">{r.productName || r.product?.name || '—'}</b>
+                  <span className="histMeta">{r.outletName || '—'} {r.locationName ? `· ${r.locationName}` : ''}</span>
+                </div>
+                <div className="histCardRight">
+                  {r.quantity != null && <span className="histQty">{r.quantity} btl</span>}
+                  {r.consumedMl != null && <span className="histQty">{r.consumedMl} ML</span>}
+                  {r.totalSell  != null && <span className="histVal">{fmtINR(r.totalSell)}</span>}
+                  <span className="histTime">
+                    {date ? date.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) : '—'}
+                    <small>{date ? date.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}) : ''}</small>
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </Shell>
+  );
+}
+
+// ── App Root ─────────────────────────────────────────────────────────────────
+function App(){
+  const [authUser, setAuthUser] = useState(null);
+  const [subscriptionExpired, setSubscriptionExpired] = useState(false);
+  const [page,setCurrent]=useState('dashboard');const [stack,setStack]=useState([]);const [outlets,setOutlets]=useState([]);const [ctx,setCtx]=useState({outlet:null,location:null});const [products,setProducts]=useState([]);const [master,setMaster]=useState([]);const [stock,setStock]=useState([]);const [recent,setRecent]=useState([]);const [reports,setReports]=useState({});const [history,setHist]=useState([]);const [users,setUsers]=useState([]);const [stockSearch,setStockSearch]=useState('');const [toast,setToast]=useState('');
+
+  function setPage(p){ if(p==='__BACK__'){setStack(s=>{const copy=[...s];setCurrent(copy.pop()||'dashboard');return copy});return;} setStack(s=>page===p?s:[...s,page]); setCurrent(p);}
+  function setOutlet(o){setCtx({outlet:o,location:null})}
+  function setLocation(l){setCtx(c=>({...c,location:l}))}
+
+  async function loadAll(){
+    try{
+      const [o,p,m,r,h,u]=await Promise.all([api('/outlets'),api('/user-products'),api('/master-bottles'),api('/inventory/recent'),api('/history'),api('/sub-users')]);
+      setOutlets(o);setProducts(p);setMaster(m);setRecent(r);setHist(h);setUsers(u);
+    }catch(e){
+      if(e.message?.includes('expired')) setSubscriptionExpired(true);
+      else setToast(e.message);
+    }
+  }
+  async function loadStock(){if(ctx.outlet&&ctx.location){const oId=ctx.outlet._id||ctx.outlet.id; const lId=ctx.location._id?.toString()||ctx.location.id; setStock(await api(`/stock?outletId=${oId}&locationId=${lId}`))}}
+  async function loadProducts(){setProducts(await api('/user-products'));}
+
+  useEffect(()=>{ if(authUser) loadAll(); },[authUser]);
+  useEffect(()=>{ if(authUser) loadStock(); },[ctx.outlet?._id||ctx.outlet?.id, ctx.location?._id?.toString()||ctx.location?.id]);
+  useEffect(()=>{ if(authUser) api('/reports').then(setReports).catch(()=>{}); },[recent.length]);
+
+  if(!authUser) return <LoginPage onLogin={(u)=>{ setAuthUser(u); }}/>;
+  if(subscriptionExpired) return <SubscriptionExpired onLogout={()=>{ setToken(null); setAuthUser(null); setSubscriptionExpired(false); }}/>;
+
+  const common={setPage,ctx,setOutlet,setLocation};
+  const views={
+    dashboard:<Dashboard setPage={setPage} user={authUser}/>,
+    outlet:<OutletPage setPage={setPage} outlets={outlets} setOutlet={setOutlet}/>,
+    barselect:<BarSelect setPage={setPage} selectedOutlet={ctx.outlet} setLocation={setLocation}/>,
+    stock:<StockPage {...common} stock={stock} stockSearch={stockSearch} setStockSearch={setStockSearch}/>,
+    inventory:<Inventory {...common} outlets={outlets} products={products} stock={stock} recent={recent} refreshRecent={async()=>{setRecent(await api('/inventory/recent'));loadStock();}}/>,
+    products:<Products setPage={setPage} products={products} master={master} loadProducts={loadProducts}/>,
+    report:<Report setPage={setPage} outlets={outlets} products={products}/>,
+    history:<HistoryPage setPage={setPage} history={history} outlets={outlets}/>,
+    subuser:<SubUser setPage={setPage} users={users}/>,
+    transfer:<Transfer {...common} products={products} refreshStock={loadStock}/>,
+    assign:<Transfer {...common} products={products} assign refreshStock={loadStock}/>,
+    addStock:<AddStock {...common} products={products} refreshStock={loadStock}/>
+  };
+  return <>{views[page]||views.dashboard}<Toast msg={toast}/></>;
+}
+
+createRoot(document.getElementById('root')).render(<App/>);

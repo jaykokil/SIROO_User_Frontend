@@ -1,0 +1,673 @@
+*{box-sizing:border-box}body{margin:0;background:#050201;color:#ff9638;font-family:Inter,system-ui,Segoe UI,sans-serif}button,input,select,textarea{font:inherit}.page{min-height:100vh;position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(25,5,1,.3),rgba(3,1,0,.96)),url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=1800&auto=format&fit=crop') center/cover}.page:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.84),rgba(0,0,0,.36) 42%,rgba(0,0,0,.82)),radial-gradient(circle at 52% 30%,rgba(42,18,5,.1),rgba(0,0,0,.78) 75%)}.page:after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:44px 44px;opacity:.12}.pageContent{position:relative;z-index:2;min-height:100vh;padding:24px 38px 34px}.topLine{display:flex;justify-content:space-between;height:44px}.backButton,.logout{display:inline-flex;align-items:center;gap:10px;border:0;background:transparent;color:#ff9638;font-size:21px;font-weight:700;cursor:pointer;text-shadow:0 0 11px rgba(255,137,41,.26)}.backIcon{width:31px;height:31px}.homeButton{width:41px;height:41px;border-radius:50%;border:4px solid #ff9638;background:rgba(0,0,0,.22);color:#ff9638;display:grid;place-items:center;padding:6px;box-shadow:0 0 18px rgba(242,132,35,.42);cursor:pointer}.homeIcon{width:22px;height:22px}.logoutIcon{width:26px;height:26px}.shell{position:relative;margin-top:8px;min-height:calc(100vh - 92px);border:1.5px solid rgba(181,91,18,.48);border-radius:18px;background:linear-gradient(180deg,rgba(0,0,0,.50),rgba(8,3,1,.66));box-shadow:inset 0 0 0 1px rgba(255,174,74,.035),0 0 28px rgba(149,68,12,.12);padding:34px 38px 30px}h1{margin:0;color:#ff9638;font-size:41px;line-height:1.05;font-weight:800;letter-spacing:-.055em}h2{color:#ff9638}p,.sub{color:#ffc181}.header{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}.actions,.stockActions{display:flex;gap:14px;flex-wrap:wrap}.actions button,.stockActions button,.addBtn,.confirm,.bottomActions button,.field,.summary button{min-height:50px;border-radius:12px;border:1.4px solid rgba(255,150,56,.7);color:#ff9638;font-weight:800;background:linear-gradient(90deg,rgba(88,54,20,.66),rgba(176,118,42,.28),rgba(24,15,9,.86));cursor:pointer;padding:0 18px;box-shadow:inset 0 0 18px rgba(255,180,80,.03),0 16px 32px rgba(0,0,0,.22)}button:disabled,input:disabled,select:disabled{opacity:.45;cursor:not-allowed}.dashboard header{position:relative;z-index:2;height:118px;padding:28px 48px;display:flex;justify-content:space-between;align-items:flex-start}.profile{display:flex;flex-direction:column;color:#ffc181}.logo{position:absolute;left:50%;transform:translateX(-50%);top:32px}.logo b{font-family:Georgia,serif;font-size:58px;letter-spacing:.25em;color:#f49b3f;text-shadow:0 0 18px rgba(239,127,35,.5)}.dashGrid{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,200px);justify-content:center;gap:36px;margin:80px auto 0}.dashCard:nth-child(n+5){transform:translateX(118px)}.dashCard{height:145px;border:1.5px solid rgba(242,141,47,.86);border-radius:36px 18px;background:linear-gradient(145deg,rgba(12,10,8,.4),rgba(69,32,9,.16));color:white;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer;box-shadow:0 0 25px rgba(236,124,34,.24),0 16px 36px rgba(0,0,0,.42)}.dashIcon{width:44px;height:44px;color:white}.outletShell{text-align:left}.outletCards,.barCards{display:grid;grid-template-columns:repeat(3,1fr);gap:58px;margin-top:70px}.outletCard{height:178px;border-radius:14px;border:1.6px solid rgba(224,125,36,.78);background:linear-gradient(180deg,rgba(94,57,20,.35),rgba(28,16,8,.47));color:#ff9638;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;font-size:30px;font-weight:800;cursor:pointer}.outletSvg{width:76px;height:76px;color:white}.searchWrap{height:52px;border:1.5px solid rgba(231,127,34,.62);border-radius:10px;background:linear-gradient(90deg,rgba(14,10,7,.62),rgba(37,25,13,.50));box-shadow:inset 0 0 16px rgba(255,180,80,.018),0 12px 24px rgba(0,0,0,.15);display:flex;align-items:center;gap:13px;padding:0 17px;max-width:520px}.searchWrap input{border:0;background:transparent;outline:0;color:#fff;width:100%;min-width:0}.searchWrap input::placeholder{color:rgba(255,255,255,.58)}.searchIcon,.filterIcon{width:25px;height:25px;color:#ff9638}.selectBox{height:50px;border:1.5px solid rgba(231,127,34,.62);border-radius:10px;background:linear-gradient(90deg,rgba(14,10,7,.72),rgba(37,25,13,.58));color:#ffe0bd;padding:0 14px;min-width:160px}.table{margin-top:18px;border:1.5px solid rgba(201,107,25,.58);border-radius:12px;overflow:hidden;background:linear-gradient(180deg,rgba(0,0,0,.42),rgba(18,10,4,.52))}.thead,.trow{display:grid;grid-template-columns:repeat(7,1fr);align-items:center}.thead{height:58px;background:rgba(0,0,0,.34);border-bottom:1px solid rgba(150,75,15,.36);color:#ffb36e;font-weight:800}.thead span,.trow span{padding:0 14px}.trow{min-height:60px;border-bottom:1px solid rgba(150,75,15,.28);color:rgba(255,255,255,.84)}.trow.full{grid-template-columns:inherit}.stockTable .thead,.stockTable .trow{grid-template-columns:1.6fr 1fr 1fr 1fr 1fr 1fr 1fr}.filters,.toolbar{display:grid;grid-template-columns:1fr 190px 170px 54px;gap:14px;margin-top:24px}.filterBtn{height:50px;border-radius:10px;border:1.5px solid rgba(231,127,34,.62);background:rgba(0,0,0,.35);display:grid;place-items:center;color:#ff9638}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin:28px 0}.stats div,.metricBox,.detail,.summary,.formPanel,.modal>div{border:1.5px solid rgba(255,168,96,.34);border-radius:14px;background:radial-gradient(circle at top left,rgba(255,180,86,.08),transparent 38%),linear-gradient(180deg,rgba(58,36,17,.72),rgba(12,8,5,.92));padding:20px}.stats span,.metricBox span{display:block;color:rgba(255,202,148,.9);font-size:14px;text-transform:uppercase}.stats b,.metricBox b{display:block;margin-top:16px;color:#ff9b3d;font-size:28px}.inv{margin-top:70px}.inv.locked:before{content:'Select outlet and bar/stock room to activate inventory';position:absolute;inset:0;border-radius:18px;background:rgba(0,0,0,.5);z-index:4;display:flex;align-items:center;justify-content:center;color:#ffc181;font-size:24px;font-weight:800;pointer-events:none}.deviceFloating{position:absolute;right:44px;top:78px;z-index:5;width:240px;border:1.5px solid rgba(255,168,96,.34);border-radius:14px;background:linear-gradient(180deg,rgba(38,24,12,.76),rgba(10,7,5,.94));padding:14px 16px;display:flex;flex-direction:column;gap:8px}.deviceFloating button{height:38px;border-radius:9px;border:1px solid #ff9638;background:rgba(0,0,0,.3);color:#ff9638}.invTop{display:grid;grid-template-columns:1fr 440px;gap:34px}.rightTop{display:flex;flex-direction:column;align-items:flex-end;gap:26px}.selectRow{display:flex;gap:12px}.remain{width:300px;height:160px;border-radius:30px;background:linear-gradient(180deg,rgba(68,42,18,.82),rgba(18,11,6,.94));border:1.5px solid rgba(255,170,82,.30);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}.remain b{font-size:48px;color:#ff9d42}.remain button{height:38px;border-radius:10px;border:1px solid #ff9638;background:rgba(0,0,0,.24);color:#ff9638}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:46px}.inputMetric input{margin-top:12px;width:100%;height:38px;border-radius:9px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.08);color:white;padding:0 12px}.bottomActions{display:flex;gap:16px;margin-top:28px}.suggestions{position:absolute;background:#140905;border:1px solid #874914;border-radius:10px;z-index:8;overflow:hidden;max-width:520px}.suggestions button{display:block;width:100%;padding:12px 16px;text-align:left;background:transparent;border:0;color:#ffe0bd}.productTable{margin-top:18px;border:1.5px solid rgba(201,107,25,.58);border-radius:12px;overflow:hidden}.prodHead,.prodRow{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 52px;align-items:center}.prodHead{height:58px;background:rgba(0,0,0,.34);color:#ffb36e;font-weight:800}.prodHead span,.prodRow>span,.prodRow>strong{padding:0 14px}.prodRow{min-height:84px;border-bottom:1px solid rgba(150,75,15,.28);color:#fff}.prodRow>div{display:grid;grid-template-columns:52px 1fr;grid-template-rows:1fr 1fr;align-items:center;padding-left:14px}.bottleThumb{grid-row:1/3;width:42px;height:58px;display:grid;place-items:center;border:1px solid rgba(255,150,56,.18);border-radius:8px}.bottleSvg{width:32px;height:54px}.bottleSvg.orange{color:#ff8a2a}.bottleSvg.blue{color:#8ab8ff}.bottleSvg.green{color:#8fc66b}.bottleSvg.cyan{color:#54d4f0}.bottleSvg.amber{color:#c96f2f}.bottleSvg.red{color:#c46a3d}.bottleSvg.silver{color:#e9eef6}.footerBar{margin-top:12px;color:#ffd1a4}.cardDetail{display:grid;grid-template-columns:1fr 420px;gap:28px;margin-top:36px}.userGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}.userCard{border:1.5px solid rgba(255,168,96,.30);border-radius:17px;background:linear-gradient(180deg,rgba(58,36,17,.70),rgba(12,8,5,.91));color:#fff;padding:22px;display:flex;flex-direction:column;text-align:left}.userCard.selected{border-color:#ff9638}.avatar{font-size:32px}.detail p,.summary p{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid rgba(255,150,56,.15);padding-bottom:12px;color:#fff}.transferGrid{display:grid;grid-template-columns:1.05fr .95fr;gap:26px;margin-top:30px}.formPanel{display:flex;flex-direction:column;gap:12px}.formPanel.single{max-width:520px}.formPanel label{color:#ffc36f;font-weight:700}.formPanel input,.formPanel textarea{border-radius:10px;border:1px solid rgba(201,107,25,.42);background:rgba(0,0,0,.35);color:white;padding:14px}.quantity{display:grid;grid-template-columns:64px 1fr 64px;height:58px;border:1px solid rgba(201,107,25,.42);border-radius:10px;overflow:hidden}.quantity button{border:0;background:rgba(88,54,20,.7);color:#ffc36f;font-size:30px}.quantity span{display:grid;place-items:center;color:#fff}.sumBottle{display:flex;align-items:center;gap:16px;color:#fff}.confirm{margin-top:26px;width:min(640px,100%);height:62px}.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:20;display:grid;place-items:center}.modal>div{width:min(520px,calc(100vw - 40px));display:flex;flex-direction:column;gap:14px}.toast{position:fixed;left:24px;bottom:24px;z-index:30;background:#180a05;border:1px solid #ff9638;color:#ffd1a4;border-radius:10px;padding:14px 18px}@media(max-width:1000px){.dashGrid{grid-template-columns:repeat(2,200px)}.dashCard:nth-child(n+5){transform:none}.outletCards,.barCards,.metrics,.stats,.cardDetail,.transferGrid,.invTop{grid-template-columns:1fr}.toolbar,.filters{grid-template-columns:1fr}.deviceFloating{position:relative;right:auto;top:auto;margin:10px 0}.inv{margin-top:8px}.table,.productTable{overflow:auto}.thead,.trow,.prodHead,.prodRow{min-width:900px}.userGrid{grid-template-columns:1fr}}
+
+/* Final functional fixes */
+.productToolbar{grid-template-columns:minmax(320px,1fr) 210px 54px!important;align-items:center}.reportFilters{grid-template-columns:minmax(320px,1fr) 220px 220px!important}.inlineMsg{color:#ffc181;background:rgba(0,0,0,.28);border:1px solid rgba(255,150,56,.28);border-radius:10px;padding:10px 14px;margin:12px 0;display:inline-block}.modalList{max-height:230px;overflow:auto;border:1px solid rgba(255,150,56,.28);border-radius:10px;background:rgba(0,0,0,.28)}.modalList button{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:12px 14px;border:0;border-bottom:1px solid rgba(255,150,56,.14);background:transparent;color:#fff;cursor:pointer}.modalList small{color:#ffc181}.dotWrap{position:relative;display:flex;align-items:center;justify-content:center}.dotWrap>button,.prodRow button{border:0;background:transparent;color:#ff9638;font-size:18px;cursor:pointer}.dotMenu{position:absolute;right:6px;top:38px;z-index:20;min-width:150px;border:1px solid rgba(255,150,56,.45);border-radius:10px;background:#120805;box-shadow:0 12px 28px rgba(0,0,0,.45);overflow:hidden}.dotMenu button{display:block;width:100%;text-align:left;padding:11px 13px;color:#ffd1a4;border-bottom:1px solid rgba(255,150,56,.14);background:transparent;font-size:14px}.dotMenu button:hover,.suggestions button:hover,.modalList button:hover{background:rgba(255,150,56,.11)}.addStockGrid{display:grid;grid-template-columns:minmax(360px,520px) minmax(320px,1fr);gap:24px;margin-top:26px}.recentAdd p{display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center;color:#fff;border-bottom:1px solid rgba(255,150,56,.16);padding-bottom:10px}.recentAdd small{grid-column:1/3;color:#ffc181}.selectedBottle{display:flex;align-items:center;gap:14px;border:1.5px solid rgba(231,127,34,.42);border-radius:12px;background:linear-gradient(90deg,rgba(14,10,7,.62),rgba(37,25,13,.50));padding:12px 14px;max-width:620px;color:#fff}.selectedBottle.compact{max-width:100%;min-height:64px}.selectedBottle .bottleSvg{width:34px;height:58px}.selectedBottle div{display:flex;flex-direction:column;gap:4px;flex:1}.selectedBottle b{color:#fff4e8}.selectedBottle span,.selectedBottle small{color:#ffc181}.selectedBottle button{height:36px;border-radius:8px;border:1px solid rgba(255,150,56,.55);background:rgba(0,0,0,.22);color:#ff9638}.deviceFloating{position:absolute!important;right:72px!important;top:64px!important;z-index:8!important;width:240px!important}.shell.inv{margin-top:118px!important}.inv.locked:before{content:'Select outlet and bar/stock room to activate inventory';position:absolute;inset:0;border-radius:18px;background:rgba(0,0,0,.55);z-index:4;display:flex;align-items:center;justify-content:center;color:#ffc181;font-size:24px;font-weight:800;pointer-events:none}.recentTable{margin-top:18px;border:1.5px solid rgba(201,107,25,.58);border-radius:12px;overflow:hidden;background:linear-gradient(180deg,rgba(0,0,0,.42),rgba(18,10,4,.52))}.recentHead,.recentRow{display:grid;grid-template-columns:1.6fr .7fr .9fr 1fr 1fr .9fr;align-items:center}.recentHead{height:52px;color:#ffb36e;font-weight:800;background:rgba(0,0,0,.34);border-bottom:1px solid rgba(150,75,15,.36)}.recentHead span,.recentRow span{padding:0 14px}.recentRow{min-height:50px;color:#fff;border-bottom:1px solid rgba(150,75,15,.25)}.historyTable .historyHead,.historyTable .historyRow{grid-template-columns:1.25fr 1fr 1.35fr 1fr 1fr .8fr .8fr .8fr!important}.historyTable .thead,.historyTable .trow{display:grid}.historyTable{overflow:auto}.historyTable .historyHead,.historyTable .historyRow{min-width:1050px}.filterBtn{display:grid;place-items:center}.selectBox,select.selectBox{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,#ff9638 50%),linear-gradient(135deg,#ff9638 50%,transparent 50%),linear-gradient(90deg,transparent,transparent);background-position:calc(100% - 18px) 22px,calc(100% - 12px) 22px,100% 0;background-size:6px 6px,6px 6px,2.5em 2.5em;background-repeat:no-repeat;color:#ffe0bd!important}.selectBox option{background:#120805;color:#ffe0bd}.summary .sumBottle .bottleSvg{color:#ff8a2a}.formPanel .searchWrap{max-width:100%}@media(max-width:1000px){.addStockGrid{grid-template-columns:1fr}.deviceFloating{position:relative!important;right:auto!important;top:auto!important;margin:10px 0}.shell.inv{margin-top:8px!important}.historyTable .historyHead,.historyTable .historyRow{min-width:900px}.productToolbar,.reportFilters{grid-template-columns:1fr!important}}
+
+/* ── Login Page ── */
+.loginPage .pageContent{display:grid;place-items:center;min-height:100vh;padding:24px}
+.loginContent{width:100%;display:grid;place-items:center}
+.loginCard{width:min(460px,calc(100vw - 40px));border:1.5px solid rgba(255,150,56,.55);border-radius:24px;background:linear-gradient(180deg,rgba(20,10,4,.92),rgba(8,3,1,.97));box-shadow:0 0 60px rgba(149,68,12,.2),0 30px 80px rgba(0,0,0,.6);padding:44px 40px 36px;display:flex;flex-direction:column;align-items:center;gap:0}
+.loginLogo{font-family:Georgia,serif;font-size:52px;letter-spacing:.28em;padding-left:.28em;background:linear-gradient(180deg,#ffd6a0,#ff9638,#9d4416);-webkit-background-clip:text;color:transparent;text-shadow:none;line-height:1;margin-bottom:10px}
+.loginSub{color:#ffc181;font-size:15px;margin:0 0 32px;letter-spacing:.04em;text-align:center}
+.loginForm{width:100%;display:flex;flex-direction:column;gap:18px}
+.loginField{display:flex;flex-direction:column;gap:8px;color:#ffc181;font-weight:700;font-size:14px}
+.loginField input{height:52px;border:1.5px solid rgba(231,127,34,.5);border-radius:13px;background:rgba(0,0,0,.45);color:#fff;padding:0 16px;font-size:16px;outline:none;transition:border-color .2s}
+.loginField input:focus{border-color:rgba(255,150,56,.9);box-shadow:0 0 0 3px rgba(255,150,56,.1)}
+.loginField input::placeholder{color:rgba(255,255,255,.32)}
+.loginBtn{margin-top:8px;height:54px;width:100%;border-radius:14px;border:1.4px solid rgba(255,150,56,.8);color:#ff9638;font-weight:800;font-size:18px;background:linear-gradient(90deg,rgba(88,54,20,.76),rgba(176,118,42,.38),rgba(24,15,9,.9));cursor:pointer;box-shadow:0 0 24px rgba(255,150,56,.15),0 14px 32px rgba(0,0,0,.3);transition:opacity .15s}
+.loginBtn:disabled{opacity:.5;cursor:not-allowed}
+.loginErr{color:#ff7043;background:rgba(255,100,50,.08);border:1px solid rgba(255,100,50,.3);border-radius:10px;padding:10px 14px;font-size:14px;width:100%;text-align:center;margin:0}
+.loginFooter{margin-top:24px;color:rgba(255,193,129,.5);font-size:13px;text-align:center;line-height:1.6}
+
+/* ── Device status colors ── */
+.statusOn  { color: #7dff9d !important; }
+.statusOff { color: #ff6b35 !important; }
+
+/* ── Device status rows ── */
+.deviceRows { display:flex; flex-direction:column; gap:6px; margin:8px 0; }
+.deviceRow  { display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:13px; }
+.deviceRow span { color:rgba(255,193,129,.65); }
+.deviceRow b    { font-size:13px; }
+.statusOn  { color:#7dff9d !important; }
+.statusOff { color:#ff6b35 !important; }
+
+/* ── Report Page ── */
+.reportFiltersGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:18px}
+.filterGroup{display:flex;flex-direction:column;gap:6px}
+.filterGroup label{color:#ffc181;font-size:13px;font-weight:700}
+.filterGroup select,.filterGroup input[type=date]{height:44px;border:1.5px solid rgba(231,127,34,.4);border-radius:11px;background:rgba(0,0,0,.45);color:#fff;padding:0 12px;font-size:14px;outline:none;cursor:pointer}
+.filterGroup select:disabled{opacity:.4;cursor:not-allowed}
+.filterGroup input[type=date]{color-scheme:dark}
+.filterGroup .searchWrap{height:44px;border-radius:11px}
+.reportActions{display:flex;gap:12px;margin-bottom:20px;align-items:center}
+.generateBtn{height:48px;padding:0 32px;border-radius:13px;border:1.5px solid rgba(255,150,56,.8);color:#ff9638;font-weight:800;font-size:15px;background:linear-gradient(90deg,rgba(88,54,20,.76),rgba(176,118,42,.38));cursor:pointer;transition:opacity .15s}
+.generateBtn:disabled{opacity:.5;cursor:not-allowed}
+.clearBtn{height:48px;padding:0 20px;border-radius:13px;border:1px solid rgba(255,255,255,.15);color:rgba(255,193,129,.7);font-size:14px;background:transparent;cursor:pointer}
+.reportStats{margin-bottom:20px}
+.noData{color:rgba(255,193,129,.5);text-align:center;padding:40px 0;font-size:15px}
+.reportEmpty{text-align:center;padding:60px 0;color:rgba(255,193,129,.4);font-size:15px}
+.reportEmpty b{color:rgba(255,193,129,.7)}
+.reportTableWrap{overflow-x:auto;border-radius:14px;border:1px solid rgba(231,127,34,.2)}
+.reportTable{min-width:1700px;width:100%}
+.reportHead,.reportRow{display:grid;grid-template-columns:150px 110px 120px 150px 90px 65px 100px 75px 90px 75px 90px 105px 90px 95px 90px;align-items:center;padding:0 10px}
+.reportHead{background:rgba(231,127,34,.08);border-bottom:1px solid rgba(231,127,34,.2);height:44px}
+.reportHead span{color:#ffc181;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.reportRow{height:50px;border-bottom:1px solid rgba(255,255,255,.04)}
+.reportRow:hover{background:rgba(231,127,34,.06)}
+.reportRow span{color:rgba(255,255,255,.8);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.typePill{display:inline-block;padding:3px 10px;border-radius:20px;background:rgba(255,150,56,.15);color:#ffb06a;font-size:12px;font-weight:700;border:1px solid rgba(255,150,56,.25)}
+
+/* ── Dashboard profile ── */
+.profileBrand{font-size:26px;font-weight:900;color:#ff9638;letter-spacing:-.02em;line-height:1.1}
+.profileOwner{font-size:16px;color:#ffc181;margin-top:4px}
+.profileRole{font-size:13px;color:rgba(255,193,129,.55);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+
+/* ── Dashboard grid — 3 top + 3 bottom centred ── */
+.dashGrid{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,180px);justify-content:center;gap:32px;margin:72px auto 0;max-width:640px}
+.dashCard:nth-child(n+5){transform:none}
+
+/* ── Home button icon centering ── */
+.homeButton{width:44px;height:44px;border-radius:50%;border:3px solid #ff9638;background:rgba(0,0,0,.3);color:#ff9638;display:flex;align-items:center;justify-content:center;padding:0;box-shadow:0 0 18px rgba(242,132,35,.42);cursor:pointer}
+.homeIcon{width:20px;height:20px;display:block}
+
+/* ── Device status inside shell, no overlap ── */
+.deviceFloating{position:relative !important;right:auto !important;top:auto !important;width:auto !important;margin-bottom:20px;border:1.5px solid rgba(255,168,96,.3);border-radius:14px;background:linear-gradient(180deg,rgba(38,24,12,.76),rgba(10,7,5,.94));padding:14px 18px;display:flex;flex-direction:row;align-items:center;gap:24px;flex-wrap:wrap}
+.deviceFloating>span{color:#ffc181;font-weight:700;font-size:14px;flex-shrink:0}
+.deviceFloating button{height:36px;border-radius:9px;border:1px solid #ff9638;background:rgba(0,0,0,.3);color:#ff9638;padding:0 14px;flex-shrink:0}
+.shell.inv{margin-top:0 !important}
+
+/* ── Recent inventory — 8 columns ── */
+.recentHead,.recentRow{grid-template-columns:1.6fr .7fr .85fr .7fr .85fr 1fr .9fr .8fr}
+
+/* ── Add Bottle Modal redesign ── */
+.addBottleModal{width:min(600px,calc(100vw - 32px));display:flex;flex-direction:column;gap:18px;max-height:90vh;overflow-y:auto}
+.addBottleModalHead{display:flex;justify-content:space-between;align-items:center}
+.addBottleModalHead h2{margin:0}
+.modalClose{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,150,56,.4);background:rgba(0,0,0,.3);color:#ff9638;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.addBottleModalSub{color:rgba(255,193,129,.7);font-size:14px;margin:0}
+.addBottleSearch{display:flex;flex-direction:column;gap:10px}
+.addBottleSearch label,.addBottlePrice label{color:#ffc181;font-weight:700;font-size:14px}
+.modalBottleRow{display:flex;align-items:center;gap:12px;width:100%}
+.modalBottleRow .bottleSvg{width:28px;height:46px;color:#ff8a2a;flex-shrink:0}
+.modalBottleRow div{flex:1;display:flex;flex-direction:column;gap:3px}
+.modalBottleRow b{color:#fff4e8;font-size:15px}
+.modalBottleRow small{color:#ffc181;font-size:12px}
+.modalBottleRow .checkmark{color:#7dff9d;font-size:18px;font-weight:900;flex-shrink:0}
+.modalList button.selected{background:rgba(255,150,56,.12);border-left:3px solid #ff9638}
+.noResults{display:block;color:rgba(255,193,129,.5);padding:12px 14px;font-size:14px}
+.addBottlePrice{display:flex;flex-direction:column;gap:8px}
+.addBottlePrice input{height:50px;border-radius:12px;border:1.5px solid rgba(231,127,34,.5);background:rgba(0,0,0,.4);color:#fff;padding:0 16px;font-size:16px;outline:none}
+.addBottlePrice input:focus{border-color:rgba(255,150,56,.9)}
+.addBottleActions{display:flex;gap:12px}
+.addBottleSave{flex:1;height:50px;border-radius:12px;border:1.4px solid rgba(255,150,56,.8);color:#ff9638;font-weight:800;font-size:16px;background:linear-gradient(90deg,rgba(88,54,20,.76),rgba(176,118,42,.38));cursor:pointer}
+.addBottleSave:disabled{opacity:.4;cursor:not-allowed}
+.addBottleCancel{height:50px;padding:0 24px;border-radius:12px;border:1px solid rgba(255,255,255,.15);color:rgba(255,193,129,.7);background:transparent;cursor:pointer;font-size:15px}
+
+/* ── Assign history panel ── */
+.summary .recentAdd p,.summary p{display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center;color:#fff;border-bottom:1px solid rgba(255,150,56,.15);padding-bottom:10px;margin:0 0 10px}
+.inlineMsg.success{color:#7dff9d;border-color:rgba(100,220,120,.3);background:rgba(50,120,60,.1)}
+.inlineMsg.error{color:#ff7043;border-color:rgba(255,100,60,.3);background:rgba(120,40,20,.1)}
+
+/* ── History Page ── */
+.histCount{background:rgba(255,150,56,.12);border:1px solid rgba(255,150,56,.3);color:#ffc181;padding:6px 16px;border-radius:20px;font-size:14px;font-weight:700;align-self:center}
+.histFiltersRow{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px;align-items:center}
+.histFiltersRow select,.histFiltersRow input[type="date"]{height:42px;border-radius:10px;border:1px solid rgba(231,127,34,.4);background:rgba(0,0,0,.35);color:#fff;padding:0 12px;font-size:14px;outline:none;min-width:140px}
+.histFiltersRow select:focus,.histFiltersRow input[type="date"]:focus{border-color:rgba(255,150,56,.8)}
+.histFiltersRow .searchWrap{flex:1;min-width:200px}
+.histList{display:flex;flex-direction:column;gap:10px}
+.histCard{display:flex;justify-content:space-between;align-items:center;background:rgba(20,12,4,.55);border:1px solid rgba(231,127,34,.2);border-radius:14px;padding:14px 18px;gap:12px;transition:border-color .2s}
+.histCard:hover{border-color:rgba(255,150,56,.5)}
+.histCardLeft{display:flex;flex-direction:column;gap:5px;min-width:0}
+.histProduct{color:#fff4e8;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.histMeta{color:rgba(255,193,129,.6);font-size:13px}
+.histCardRight{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.histQty{color:#ff9638;font-weight:700;font-size:15px}
+.histVal{color:#7dff9d;font-weight:700;font-size:14px}
+.histTime{color:rgba(255,193,129,.7);font-size:13px;text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.histTime small{font-size:11px;opacity:.7}
+.typePill.pill-blue{background:rgba(56,120,255,.18);color:#7db4ff;border:1px solid rgba(56,120,255,.3)}
+.typePill.pill-green{background:rgba(56,200,120,.18);color:#7dffc0;border:1px solid rgba(56,200,120,.3)}
+.typePill.pill-orange{background:rgba(255,150,56,.18);color:#ffc181;border:1px solid rgba(255,150,56,.3)}
+.typePill.pill-purple{background:rgba(160,56,255,.18);color:#d4a0ff;border:1px solid rgba(160,56,255,.3)}
+.typePill.pill-teal{background:rgba(56,210,210,.18);color:#7dffff;border:1px solid rgba(56,210,210,.3)}
+.typePill.pill-gray{background:rgba(180,180,180,.12);color:#bbb;border:1px solid rgba(180,180,180,.2)}
+.dashIcon,.outletSvg{object-fit:contain}
+
+/* ── Report multi-select chip filters ── */
+.chipRow{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.chipLabel{color:rgba(255,193,129,.55);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;padding-top:6px;min-width:80px}
+.chipSet{display:flex;flex-wrap:wrap;gap:8px;flex:1}
+.filterChip{height:30px;padding:0 14px;border-radius:20px;border:1px solid rgba(255,150,56,.3);background:rgba(0,0,0,.3);color:rgba(255,193,129,.75);font-size:13px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.filterChip:hover{border-color:rgba(255,150,56,.7);color:#ffc181}
+.filterChipOn{background:rgba(255,150,56,.18) !important;border-color:#ff9638 !important;color:#ff9638 !important;font-weight:700}
+.chipClearBtn{height:28px;padding:0 10px;border-radius:14px;border:1px solid rgba(255,80,60,.4);background:transparent;color:rgba(255,100,60,.75);font-size:12px;cursor:pointer;white-space:nowrap}
+
+/* ── Multi-select checkbox dropdown ── */
+.msdropTrigger{
+  width:100%;height:44px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 12px;
+  border:1.5px solid rgba(231,127,34,.4);border-radius:11px;
+  background:rgba(0,0,0,.45);color:rgba(255,255,255,.75);
+  font-size:14px;cursor:pointer;text-align:left;
+  transition:border-color .15s;
+}
+.msdropTrigger:hover:not(:disabled){border-color:rgba(255,150,56,.7);color:#fff}
+.msdropTrigger:disabled{opacity:.4;cursor:not-allowed}
+.msdropArrow{font-size:10px;color:rgba(255,193,129,.5);margin-left:8px;flex-shrink:0}
+.msdropPanel{
+  position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:200;
+  background:#1a0e05;
+  border:1.5px solid rgba(231,127,34,.45);
+  border-radius:12px;
+  max-height:220px;overflow-y:auto;
+  box-shadow:0 8px 32px rgba(0,0,0,.6);
+  padding:6px 0;
+}
+.msdropPanel::-webkit-scrollbar{width:4px}
+.msdropPanel::-webkit-scrollbar-track{background:transparent}
+.msdropPanel::-webkit-scrollbar-thumb{background:rgba(255,150,56,.3);border-radius:4px}
+.msdropClearAll{
+  width:100%;padding:8px 14px;text-align:left;
+  background:rgba(255,80,60,.08);border:none;border-bottom:1px solid rgba(255,150,56,.15);
+  color:rgba(255,100,60,.8);font-size:12px;cursor:pointer;
+}
+.msdropClearAll:hover{background:rgba(255,80,60,.15)}
+.msdropItem{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 14px;cursor:pointer;
+  transition:background .1s;
+}
+.msdropItem:hover{background:rgba(255,150,56,.08)}
+.msdropItem input[type=checkbox]{
+  width:16px;height:16px;flex-shrink:0;
+  accent-color:#ff9638;cursor:pointer;
+}
+.msdropItem span{color:rgba(255,255,255,.82);font-size:13px;line-height:1.3}
+.msdropEmpty{display:block;padding:12px 14px;color:rgba(255,193,129,.4);font-size:13px}
+
+/* ── New: Add Bottle Modal — full bottle weight + outlet checkboxes ── */
+.addBottlePriceGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.addBottleField{display:flex;flex-direction:column;gap:8px;color:#ffc181;font-weight:700;font-size:14px}
+.addBottleField input{height:50px;border-radius:12px;border:1.5px solid rgba(231,127,34,.5);background:rgba(0,0,0,.4);color:#fff;padding:0 16px;font-size:16px;outline:none}
+.addBottleField input:focus{border-color:rgba(255,150,56,.9)}
+.emptyWtPreview{border:1px solid rgba(255,150,56,.3);border-radius:12px;background:rgba(255,150,56,.06);padding:12px 16px;display:flex;flex-direction:column;gap:4px;margin-top:4px}
+.emptyWtPreview span{color:#ffc181;font-size:13px}
+.emptyWtPreview b{color:#ff9638}
+.addBottleOutlets{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.addBottleOutlets>label:first-child{color:#ffc181;font-weight:700;font-size:14px}
+.allOutletRow{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid rgba(255,150,56,.35);border-radius:10px;background:rgba(255,150,56,.06);cursor:pointer;color:#ff9638;font-weight:700}
+.outletCheckGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.outletCheckRow{display:flex;align-items:center;gap:10px;padding:9px 14px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(0,0,0,.25);cursor:pointer;color:rgba(255,255,255,.82);font-size:14px}
+.outletCheckRow input[type=checkbox]{width:16px;height:16px;accent-color:#ff9638;cursor:pointer;flex-shrink:0}
+.outletCheckRow.dimmed{opacity:.45}
+/* Products table — 7 cols (added Empty Wt.) */
+.prodHead,.prodRow{grid-template-columns:2fr 1fr .8fr 1fr .9fr 52px}
+
+/* ══════════════════════════════════════════════════════
+   PRE-BATCH MODULE
+   ══════════════════════════════════════════════════════ */
+
+/* ── Outlet selector ── */
+.pbOutletSelect{height:44px;border:1.5px solid rgba(231,127,34,.45);border-radius:11px;background:rgba(0,0,0,.4);color:#fff;padding:0 14px;font-size:14px;min-width:200px;outline:none}
+
+/* ── Tab bar ── */
+.pbTabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:22px;border-bottom:1px solid rgba(255,150,56,.15);padding-bottom:12px}
+.pbTab{height:36px;padding:0 16px;border-radius:10px;border:1px solid rgba(255,150,56,.2);background:rgba(0,0,0,.25);color:rgba(255,193,129,.7);font-size:13px;font-weight:700;cursor:pointer;transition:all .15s}
+.pbTab:hover{border-color:rgba(255,150,56,.55);color:#ffc181}
+.pbTabOn{background:rgba(255,150,56,.18);border-color:#ff9638;color:#ff9638}
+
+/* ── Recipe cards ── */
+.pbRecipeGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+.pbRecipeCard{border:1px solid rgba(255,150,56,.28);border-radius:16px;padding:20px;background:linear-gradient(180deg,rgba(58,36,17,.55),rgba(8,4,1,.88))}
+.pbRecipeHead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.pbRecipeHead b{color:#fff2e2;font-size:18px}
+.pbPill{border:1px solid rgba(255,150,56,.3);border-radius:999px;padding:4px 12px;color:#ffc181;font-size:12px;background:rgba(0,0,0,.25)}
+.pbRecipeMeta{display:flex;flex-wrap:wrap;gap:14px;margin:10px 0;font-size:13px;color:rgba(255,193,129,.65)}
+.pbRecipeMeta b{color:#ffc181}
+.pbRecipeIngList{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.pbIngPill{border:1px solid rgba(255,150,56,.2);border-radius:999px;padding:3px 10px;font-size:12px;color:rgba(255,193,129,.8);background:rgba(0,0,0,.2)}
+.pbCardActions{display:flex;gap:8px;margin-top:10px}
+.pbCardActions button{height:32px;padding:0 14px;border-radius:8px;border:1px solid rgba(255,150,56,.35);background:transparent;color:#ff9638;font-size:13px;cursor:pointer}
+.pbCardActions button:hover{background:rgba(255,150,56,.1)}
+
+/* ── Batch cards ── */
+.pbBatchGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.pbBatchCard{border:1px solid rgba(255,150,56,.28);border-radius:16px;padding:20px;background:linear-gradient(180deg,rgba(58,36,17,.55),rgba(8,4,1,.88))}
+.pbBatchCard.expired{border-color:rgba(255,80,60,.35);opacity:.75}
+.pbBatchHead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.pbBatchHead b{color:#fff2e2;font-size:17px}
+.pbBatchNo{font-family:monospace;font-size:12px;color:rgba(255,193,129,.5);margin-bottom:10px}
+.pbBatchMeta{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:rgba(255,193,129,.6);margin-bottom:12px}
+.pbBatchMeta b{color:#ffc181}
+.pbRemaining{margin:12px 0}
+.pbRemaining span{color:rgba(255,193,129,.6);font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+.pbRemaining b{display:block;font-size:28px;color:#ff9638;margin:4px 0 8px}
+.pbProgressBar{height:6px;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden}
+.pbProgressFill{height:100%;border-radius:3px;background:linear-gradient(90deg,#ff9638,#ffd6a0);transition:width .4s}
+.pbStatusPill{border:1px solid transparent;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700}
+.pbStatusPill.active{color:#7dff9d;border-color:rgba(100,220,120,.35);background:rgba(50,150,60,.12)}
+.pbStatusPill.expired{color:#ff7043;border-color:rgba(255,80,60,.35);background:rgba(150,40,20,.12)}
+.pbStatusPill.depleted{color:#888;border-color:rgba(150,150,150,.25)}
+.pbStatusPill.wasted{color:#ffc181;border-color:rgba(255,150,56,.3)}
+.pbActionBtn{width:100%;height:38px;border-radius:10px;border:1px solid rgba(255,150,56,.45);background:rgba(255,150,56,.08);color:#ff9638;font-weight:700;font-size:13px;cursor:pointer;margin:8px 0 4px}
+.pbActionBtn:hover{background:rgba(255,150,56,.15)}
+
+/* ── Multi-select ingredient dropdown ── */
+.pbMultiWrap{position:relative;display:flex;flex-direction:column;gap:8px}
+.pbMultiTrigger{min-height:50px;border:1.5px solid rgba(231,127,34,.45);border-radius:12px;background:rgba(0,0,0,.4);padding:0 16px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:border-color .15s}
+.pbMultiTrigger:hover{border-color:rgba(255,150,56,.8)}
+.pbMultiPanel{position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:200;background:#1a0e05;border:1.5px solid rgba(231,127,34,.45);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.6);overflow:hidden}
+.pbMultiSearch{width:100%;height:44px;border:0;border-bottom:1px solid rgba(255,150,56,.2);background:rgba(0,0,0,.3);color:#fff;padding:0 14px;font-size:14px;outline:none}
+.pbMultiList{max-height:200px;overflow-y:auto}
+.pbMultiItem{display:flex;align-items:center;justify-content:space-between;width:100%;padding:10px 14px;border:0;background:transparent;color:rgba(255,255,255,.82);font-size:13px;cursor:pointer;text-align:left}
+.pbMultiItem:hover{background:rgba(255,150,56,.08)}
+.pbMultiEmpty{display:block;padding:12px 14px;color:rgba(255,193,129,.4);font-size:13px}
+.pbSelectedList{display:flex;flex-direction:column;gap:6px}
+.pbSelectedItem{display:grid;grid-template-columns:1fr 80px 32px;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(255,150,56,.18);border-radius:10px;background:rgba(0,0,0,.25)}
+.pbSelectedName{color:#ffc181;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pbQtyInput{height:34px;border:1px solid rgba(231,127,34,.4);border-radius:8px;background:rgba(0,0,0,.35);color:#fff;padding:0 8px;font-size:13px;outline:none;width:100%}
+.pbRemoveBtn{width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,80,60,.3);background:transparent;color:#ff7043;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* ── Ingredient table ── */
+.pbIngTable{display:grid;gap:6px}
+.pbIngHead,.pbIngRow{display:grid;grid-template-columns:1.8fr .8fr 1.6fr .8fr;align-items:center;padding:12px 16px;border-radius:10px}
+.pbIngHead{background:rgba(0,0,0,.35);color:#ffb36e;font-weight:700;font-size:13px}
+.pbIngRow{background:rgba(0,0,0,.18);border:1px solid rgba(255,150,56,.1);color:rgba(255,255,255,.82);font-size:14px}
+.pbIngRow:hover{background:rgba(255,150,56,.05)}
+
+/* ── History / Wastage table ── */
+.pbHistTable{display:grid;gap:6px;overflow-x:auto}
+.pbHistHead,.pbHistRow{display:grid;grid-template-columns:140px 1.4fr .8fr .8fr .9fr .9fr .8fr;align-items:center;padding:12px 14px;border-radius:10px;min-width:700px}
+.pbHistHead{background:rgba(0,0,0,.35);color:#ffb36e;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.pbHistRow{background:rgba(0,0,0,.18);border:1px solid rgba(255,150,56,.1);color:rgba(255,255,255,.82);font-size:13px}
+.pbHistRow:hover{background:rgba(255,150,56,.05)}
+
+/* ── Produce batch form ── */
+.pbProduceForm{max-width:720px}
+
+/* ── Add ingredient form ── */
+.pbAddIngForm{display:grid;grid-template-columns:1.5fr 1fr 1.5fr auto;gap:14px;align-items:end;border:1px solid rgba(255,150,56,.2);border-radius:14px;padding:18px;background:rgba(0,0,0,.2);margin-bottom:18px}
+@media(max-width:800px){.pbAddIngForm{grid-template-columns:1fr}}
+
+/* ── Pre-Batch: Stock Room button ── */
+.pbStockBtn{border:1px solid rgba(255,150,56,.5);border-radius:10px;background:rgba(255,150,56,.08);color:#ff9638;font-weight:700;font-size:13px;padding:0 16px;height:38px;cursor:pointer}
+.pbStockBtn:hover{background:rgba(255,150,56,.16)}
+
+/* ── Bottle creation row ── */
+.pbBottleRow{display:grid;grid-template-columns:40px 1fr 1fr 1fr 32px;gap:12px;align-items:end;padding:14px;border:1px solid rgba(255,150,56,.15);border-radius:12px;background:rgba(0,0,0,.2);margin-bottom:10px}
+.pbBottleTag{font-family:monospace;font-size:16px;font-weight:900;color:#ff9638;padding-top:22px;text-align:center}
+@media(max-width:700px){.pbBottleRow{grid-template-columns:1fr;}.pbBottleTag{padding-top:0}}
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* DRAFT BEER KEG MODULE                                                        */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Stock Room / Bar action button ── */
+.kegStockBtn{border:1px solid rgba(255,196,70,.5);border-radius:10px;background:rgba(255,196,70,.08);color:#ffc446;font-weight:700;font-size:13px;padding:0 16px;height:38px;cursor:pointer}
+.kegStockBtn:hover{background:rgba(255,196,70,.18)}
+
+/* ── Summary strip ── */
+.kegStats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+.kegStats>div{border:1px solid rgba(255,150,56,.22);border-radius:14px;padding:14px 18px;background:linear-gradient(180deg,rgba(58,36,17,.5),rgba(8,4,1,.85));display:flex;flex-direction:column;gap:6px}
+.kegStats>div span{color:rgba(255,193,129,.6);font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+.kegStats>div b{color:#ff9638;font-size:22px}
+
+/* ── Keg cards ── */
+.kegGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px;margin-top:16px}
+.kegCard{border:1px solid rgba(255,150,56,.28);border-radius:16px;padding:20px;background:linear-gradient(180deg,rgba(58,36,17,.55),rgba(8,4,1,.88))}
+.kegCard.stockroom{border-color:rgba(255,193,129,.25)}
+.kegCard.active{border-color:rgba(255,150,56,.45)}
+.kegCard.closed{opacity:.6;border-color:rgba(150,150,150,.25)}
+.kegCardHead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px}
+.kegCardHead b{color:#fff2e2;font-size:17px;display:block;margin-top:4px}
+.kegTag{font-family:monospace;font-size:12px;font-weight:900;color:#ffc446;letter-spacing:.08em;text-transform:uppercase}
+
+.kegPill{border:1px solid rgba(255,150,56,.3);border-radius:999px;padding:4px 11px;font-size:11px;font-weight:700;color:#ffc181;background:rgba(0,0,0,.25);white-space:nowrap;text-transform:capitalize}
+.kegPill.active,.kegPill.inventory{color:#7dff9d;border-color:rgba(100,220,120,.35);background:rgba(50,150,60,.12)}
+.kegPill.stockroom,.kegPill.register{color:#ffc446;border-color:rgba(255,196,70,.35);background:rgba(150,120,30,.12)}
+.kegPill.closed,.kegPill.closing{color:#999;border-color:rgba(150,150,150,.28);background:rgba(80,80,80,.12)}
+.kegPill.wastage{color:#ff7043;border-color:rgba(255,80,60,.35);background:rgba(150,40,20,.12)}
+.kegPill.assign,.kegPill.transfer{color:#8ec5ff;border-color:rgba(110,170,255,.32);background:rgba(40,80,150,.12)}
+
+.kegRemaining{margin:14px 0}
+.kegRemaining>span{color:rgba(255,193,129,.6);font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+.kegRemaining>b{display:block;font-size:30px;color:#ff9638;margin:4px 0 8px}
+.kegRemaining>small{display:block;color:rgba(255,193,129,.5);font-size:12px;margin-top:6px}
+
+.kegMeta{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:rgba(255,193,129,.6);margin:12px 0}
+.kegMeta b{color:#ffc181;display:block;font-size:14px;margin-top:2px}
+.kegBarList{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.kegEmptyBtn{border-color:rgba(255,80,60,.4)!important;color:#ff7043!important}
+.kegEmptyBtn:hover{background:rgba(255,80,60,.1)!important}
+
+/* ── Brand select vs manual toggle ── */
+.kegToggleRow{display:flex;gap:8px}
+.kegToggleRow button{flex:1;height:40px;border-radius:10px;border:1px solid rgba(255,150,56,.25);background:rgba(0,0,0,.25);color:rgba(255,193,129,.7);font-size:13px;font-weight:700;cursor:pointer;transition:all .15s}
+.kegToggleRow button:hover{border-color:rgba(255,150,56,.55);color:#ffc181}
+.kegToggleRow button.kegToggleOn{background:rgba(255,150,56,.18);border-color:#ff9638;color:#ff9638}
+
+/* ── Live calculation boxes ── */
+.kegCalcBox{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;border:1px solid rgba(255,150,56,.3);border-radius:12px;padding:16px;background:rgba(255,150,56,.06)}
+.kegCalcBox>div{display:flex;flex-direction:column;gap:4px}
+.kegCalcBox span{color:rgba(255,193,129,.65);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.kegCalcBox b{color:#ff9638;font-size:24px}
+
+.kegResultBox{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;border:1px solid rgba(255,150,56,.3);border-radius:12px;padding:18px;background:rgba(255,150,56,.06)}
+.kegResultBox>div{display:flex;flex-direction:column;gap:4px}
+.kegResultBox span{color:rgba(255,193,129,.65);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.kegResultBox b{color:#ff9638;font-size:22px}
+
+/* ── Lifecycle modal ── */
+.kegDetailGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+.kegDetailGrid>div{border:1px solid rgba(255,150,56,.16);border-radius:10px;padding:10px 14px;background:rgba(0,0,0,.22);display:flex;flex-direction:column;gap:4px}
+.kegDetailGrid span{color:rgba(255,193,129,.55);font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+.kegDetailGrid b{color:#ffc181;font-size:15px}
+
+.kegTimeline{display:flex;flex-direction:column;gap:8px;max-height:340px;overflow-y:auto;padding-right:4px}
+.kegTimelineRow{display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:center;padding:12px 14px;border:1px solid rgba(255,150,56,.12);border-radius:10px;background:rgba(0,0,0,.2)}
+.kegTimelineRow b{display:block;color:rgba(255,255,255,.85);font-size:13px;font-weight:600}
+.kegTimelineRow small{display:block;color:rgba(255,193,129,.5);font-size:11px;margin-top:3px}
+
+@media(max-width:700px){
+  .kegGrid{grid-template-columns:1fr}
+  .kegCalcBox,.kegResultBox{grid-template-columns:1fr}
+  .kegTimelineRow{grid-template-columns:1fr;gap:6px}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* INVENTORY COUNT METHOD + STOCK CORRECTION                                    */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── The field HEADING is the count-method selector — styled to read as a label ── */
+.metricHeadSelect{appearance:none;-webkit-appearance:none;border:0;background:transparent;padding:0 14px 0 0;margin:0;font:inherit;font-size:13px;font-weight:700;letter-spacing:.02em;color:#ffb36e;cursor:pointer;outline:none;width:auto;max-width:100%;background-image:linear-gradient(45deg,transparent 50%,#ff9638 50%),linear-gradient(135deg,#ff9638 50%,transparent 50%);background-position:calc(100% - 5px) center,calc(100% - 1px) center;background-size:4px 4px,4px 4px;background-repeat:no-repeat}
+.metricHeadSelect:hover{color:#ff9638}
+.metricHeadSelect:disabled{opacity:.55;cursor:default}
+.metricHeadSelect option{background:#120805;color:#ffe0bd;font-weight:600}
+
+/* ── Validation state on a metric input ── */
+.metricBox.metricError{border-color:rgba(255,80,60,.6)!important}
+.metricBox.metricError input{color:#ff7043}
+.metricErrText{display:block;color:#ff7043;font-size:11px;margin-top:4px;line-height:1.3}
+
+/* ── Stock table gains a ••• column ── */
+.stockTable .thead,.stockTable .trow{grid-template-columns:2fr 1fr .9fr .9fr .9fr .8fr 1fr 52px!important}
+.stockTable{overflow:visible}
+.stockTable .trow{position:relative}
+.stockTable .dotWrap>button{border:0;background:transparent;color:#ff9638;font-size:18px;cursor:pointer;padding:4px 8px;border-radius:6px}
+.stockTable .dotWrap>button:hover{background:rgba(255,150,56,.12)}
+
+@media(max-width:1000px){
+  .stockTable{overflow-x:auto}
+  .stockTable .thead,.stockTable .trow{min-width:820px}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* BEERS LIST + KEG SERVE SALES                                                 */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Beer brand cards ── */
+.beerGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-top:8px}
+.beerCard{border:1px solid rgba(255,150,56,.26);border-radius:14px;padding:18px;background:linear-gradient(180deg,rgba(58,36,17,.5),rgba(8,4,1,.86))}
+.beerCard.inactive{opacity:.55}
+.beerCardHead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:14px}
+.beerCardHead b{color:#fff2e2;font-size:17px;display:block}
+.beerSrc{display:inline-block;margin-top:5px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#ffc446;border:1px solid rgba(255,196,70,.3);border-radius:999px;padding:2px 9px;background:rgba(150,120,30,.12)}
+.beerPrices{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.beerPrices>div{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px;border-radius:9px;background:rgba(0,0,0,.24);border:1px solid rgba(255,150,56,.12)}
+.beerPrices span{color:rgba(255,193,129,.62);font-size:12px}
+.beerPrices b{color:#ff9638;font-size:15px}
+
+/* ── Serve pricing grid inside the Beer modal ── */
+.beerPriceSection{margin-top:18px}
+.beerPriceLabel{display:block;color:#ffc181;font-size:13px;font-weight:700;margin-bottom:8px}
+.beerPriceGrid{border:1px solid rgba(255,150,56,.24);border-radius:12px;overflow:hidden;background:rgba(0,0,0,.22)}
+.beerPriceHead,.beerPriceRow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;align-items:center;padding:10px 14px}
+.beerPriceHead{background:rgba(231,127,34,.1);border-bottom:1px solid rgba(255,150,56,.18)}
+.beerPriceHead span{color:#ffc181;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.beerPriceRow{border-bottom:1px solid rgba(255,255,255,.04)}
+.beerPriceRow:last-child{border-bottom:0}
+.beerPriceRow>span{color:rgba(255,255,255,.85);font-size:14px;font-weight:600}
+.beerPriceRow input{height:40px;border-radius:9px;border:1.5px solid rgba(231,127,34,.4);background:rgba(0,0,0,.4);color:#fff;padding:0 12px;font-size:14px;width:100%;outline:none}
+.beerPriceRow input:focus{border-color:rgba(255,150,56,.85)}
+
+/* ── Serve sales entry during keg inventory ── */
+.servesGrid{border:1px solid rgba(255,150,56,.26);border-radius:12px;overflow:hidden;background:rgba(0,0,0,.22);margin-top:6px}
+.servesHead,.servesRow{display:grid;grid-template-columns:.9fr .8fr 1fr .9fr;gap:10px;align-items:center;padding:10px 14px}
+.servesHead{background:rgba(231,127,34,.1);border-bottom:1px solid rgba(255,150,56,.18)}
+.servesHead span{color:#ffc181;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.servesRow{border-bottom:1px solid rgba(255,255,255,.04)}
+.servesRow>span{color:rgba(255,255,255,.85);font-size:14px}
+.servesRow>span:nth-child(2){color:rgba(255,193,129,.6);font-size:13px}
+.servesRow input{height:40px;border-radius:9px;border:1.5px solid rgba(231,127,34,.4);background:rgba(0,0,0,.4);color:#fff;padding:0 12px;font-size:15px;width:100%;outline:none}
+.servesRow input:focus{border-color:rgba(255,150,56,.85)}
+.servesRow>b{color:#7dff9d;font-size:14px;text-align:right}
+.servesTotal{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(231,127,34,.08);border-top:1px solid rgba(255,150,56,.2)}
+.servesTotal span{color:rgba(255,193,129,.7);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.servesTotal b{color:#ff9638;font-size:16px}
+
+@media(max-width:700px){
+  .beerGrid{grid-template-columns:1fr}
+  .servesHead,.servesRow{grid-template-columns:.8fr .7fr 1fr .8fr;padding:10px 8px;gap:6px}
+  .beerPriceHead,.beerPriceRow{padding:10px 8px;gap:6px}
+}
+
+/* ── Par stock alerts on the dashboard ── */
+.alertPanel{margin:0 auto 22px;max-width:820px;border:1px solid rgba(255,120,60,.35);border-radius:16px;background:linear-gradient(180deg,rgba(60,22,8,.6),rgba(12,6,3,.85));overflow:hidden}
+.alertPanelHead{display:flex;align-items:baseline;gap:12px;padding:14px 18px;border-bottom:1px solid rgba(255,120,60,.2)}
+.alertPanelHead b{color:#ff9638;font-size:15px}
+.alertPanelHead span{color:rgba(255,193,129,.6);font-size:13px}
+.alertList{max-height:260px;overflow-y:auto}
+.alertRow{display:grid;grid-template-columns:1fr auto auto 32px;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid rgba(255,255,255,.04)}
+.alertRow:last-child{border-bottom:0}
+.alertRow.out{background:rgba(255,80,60,.06)}
+.alertMain b{display:block;color:#fff2e2;font-size:14px}
+.alertMain span{color:rgba(255,193,129,.55);font-size:12px}
+.alertQty{text-align:right}
+.alertQty b{display:block;color:#ff7043;font-size:20px;line-height:1}
+.alertQty span{color:rgba(255,193,129,.5);font-size:11px}
+.alertTag{padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.03em;white-space:nowrap}
+.alertTag.low{color:#ffc181;border:1px solid rgba(255,193,129,.35);background:rgba(255,150,56,.1)}
+.alertTag.out{color:#ff7043;border:1px solid rgba(255,100,60,.45);background:rgba(255,80,60,.12)}
+.alertDismiss{width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,193,129,.6);font-size:15px;cursor:pointer}
+.alertDismiss:hover{border-color:rgba(255,100,60,.5);color:#ff7043}
+.trow.belowPar{box-shadow:inset 3px 0 0 #ff7043}
+.parPreview{margin:12px 0 0;padding:10px 14px;border:1px solid rgba(255,150,56,.25);border-radius:10px;background:rgba(255,150,56,.06);color:#ffc181;font-size:13px}
+
+/* ── Access restricted screen ── */
+.noAccess{text-align:center;padding:70px 20px;color:rgba(255,193,129,.7)}
+.noAccess b{display:block;color:#ff9638;font-size:22px;margin-bottom:10px}
+.noAccess p{max-width:420px;margin:0 auto 20px;font-size:14px;line-height:1.6}
+
+/* ── Sub-user wizard ── */
+.wizSteps{display:flex;gap:8px;margin:0 0 18px}
+.wizStep{flex:1;display:flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid rgba(255,150,56,.18);border-radius:10px;background:rgba(0,0,0,.25)}
+.wizStep b{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;background:rgba(255,255,255,.08);color:rgba(255,193,129,.7);flex-shrink:0}
+.wizStep span{font-size:12px;color:rgba(255,193,129,.55);white-space:nowrap}
+.wizStep.on{border-color:#ff9638;background:rgba(255,150,56,.12)}
+.wizStep.on b{background:#ff9638;color:#1a0e05}
+.wizStep.on span{color:#ff9638;font-weight:700}
+.wizStep.done b{background:rgba(125,255,157,.2);color:#7dff9d}
+.wizHint{color:rgba(255,193,129,.6);font-size:13px;margin:0 0 14px}
+.wizLabel{display:block;color:#ffc181;font-weight:700;font-size:14px;margin:16px 0 8px}
+.wizLabelRow{display:flex;align-items:flex-end;justify-content:space-between}
+.wizBulk{display:flex;gap:8px}
+.wizBulk button{height:26px;padding:0 10px;border-radius:8px;border:1px solid rgba(255,150,56,.3);background:transparent;color:rgba(255,193,129,.75);font-size:12px;cursor:pointer}
+.desigGrid{display:flex;flex-wrap:wrap;gap:8px}
+.desigChip{height:34px;padding:0 15px;border-radius:20px;border:1px solid rgba(255,150,56,.3);background:rgba(0,0,0,.3);color:rgba(255,193,129,.75);font-size:13px;cursor:pointer}
+.desigChip.on{background:rgba(255,150,56,.18);border-color:#ff9638;color:#ff9638;font-weight:700}
+.accessGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.accessRow{display:flex;align-items:center;gap:10px;padding:9px 13px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(0,0,0,.25);color:rgba(255,255,255,.82);font-size:13px;cursor:pointer}
+.accessRow.on{border-color:rgba(255,150,56,.55);background:rgba(255,150,56,.1);color:#ffc181}
+.accessRow input{width:16px;height:16px;accent-color:#ff9638;cursor:pointer;flex-shrink:0}
+.moneyRow{grid-column:1/-1;align-items:flex-start;padding:13px}
+.moneyRow span b{display:block;color:#ffc181;font-size:14px}
+.moneyRow span small{display:block;color:rgba(255,193,129,.55);font-size:12px;margin-top:3px;line-height:1.5}
+.sectionChips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.sectionChip{padding:3px 10px;border-radius:999px;border:1px solid rgba(255,150,56,.25);background:rgba(255,150,56,.08);color:rgba(255,193,129,.85);font-size:12px}
+.detailActions{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+.detailActions button{height:34px;padding:0 14px;border-radius:9px;border:1px solid rgba(255,150,56,.35);background:transparent;color:#ff9638;font-size:13px;cursor:pointer}
+
+/* ── Sales report ── */
+.salesHead,.salesRow{display:grid;grid-template-columns:1.4fr .8fr .8fr .8fr .55fr .8fr 1fr .65fr 1fr 1fr .65fr .9fr;align-items:center;padding:0 12px;gap:6px}
+.salesHead{background:rgba(231,127,34,.08);border-bottom:1px solid rgba(231,127,34,.2);height:44px}
+.salesHead span{color:#ffc181;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.salesRow{min-height:52px;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;color:rgba(255,255,255,.82)}
+.salesRow:hover{background:rgba(231,127,34,.05)}
+
+/* ── Excise register ── */
+.exciseHeader{display:flex;justify-content:space-between;gap:20px;border:1px solid rgba(255,150,56,.25);border-radius:12px;padding:16px 20px;margin-bottom:16px;background:rgba(0,0,0,.25)}
+.exciseHeader b{display:block;color:#ff9638;font-size:16px;margin-bottom:4px}
+.exciseHeader span{display:block;color:rgba(255,193,129,.6);font-size:12px}
+.exciseHead,.exciseRow{display:grid;grid-template-columns:1.4fr .9fr .5fr .7fr .7fr .8fr .9fr .9fr .8fr .7fr .7fr .7fr;align-items:center;padding:0 12px;gap:6px}
+.exciseHead{background:rgba(231,127,34,.08);border-bottom:1px solid rgba(231,127,34,.2);height:44px}
+.exciseHead span{color:#ffc181;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.exciseRow{height:46px;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;color:rgba(255,255,255,.82)}
+.exciseRow:hover{background:rgba(231,127,34,.05)}
+
+/* ── SCM portal upload panel ── */
+.scmPanel{border:1px solid rgba(125,255,157,.28);border-radius:16px;background:linear-gradient(180deg,rgba(12,40,20,.35),rgba(6,12,8,.6));padding:20px;margin-bottom:20px}
+.scmHead{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}
+.scmHead b{display:block;color:#7dff9d;font-size:16px;margin-bottom:4px}
+.scmHead span{display:block;color:rgba(255,193,129,.6);font-size:13px}
+.scmBadge{padding:5px 12px;border-radius:999px;font-size:12px;font-weight:800;white-space:nowrap}
+.scmBadge.ok{color:#7dff9d;border:1px solid rgba(125,255,157,.4);background:rgba(125,255,157,.1)}
+.scmBadge.warn{color:#ffc181;border:1px solid rgba(255,193,129,.4);background:rgba(255,150,56,.1)}
+.scmBlockers{border:1px solid rgba(255,150,56,.3);border-radius:12px;background:rgba(255,150,56,.06);padding:12px 16px;margin-bottom:14px}
+.scmBlockers p{color:rgba(255,193,129,.85);font-size:13px;margin:0 0 8px;line-height:1.55}
+.scmBlockers p:last-child{margin-bottom:0}
+.scmBlockers b{color:#ffc181}
+.scmActions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.scmCount{color:rgba(255,193,129,.55);font-size:13px}
+.scmRowHead,.scmRow{display:grid;grid-template-columns:1fr 1.2fr 2.2fr 1fr .7fr .7fr;align-items:center;padding:0 12px;gap:8px}
+.scmRowHead{background:rgba(125,255,157,.07);border-bottom:1px solid rgba(125,255,157,.15);height:40px}
+.scmRowHead span{color:#7dff9d;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.scmRow{height:42px;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;color:rgba(255,255,255,.82)}
+
+/* ── Excise code mapping in Products ── */
+.scmMapBox{border:1px solid rgba(125,255,157,.25);border-radius:12px;background:rgba(125,255,157,.05);padding:14px;margin-top:14px}
+.scmMapBox>label{display:block;color:#7dff9d;font-weight:700;font-size:13px;margin-bottom:8px}
+.scmSearchList{max-height:190px;overflow-y:auto;border:1px solid rgba(255,150,56,.2);border-radius:10px;margin-top:8px;background:rgba(0,0,0,.35)}
+.scmSearchItem{display:block;width:100%;text-align:left;padding:9px 13px;border:0;border-bottom:1px solid rgba(255,255,255,.04);background:transparent;color:rgba(255,255,255,.82);font-size:13px;cursor:pointer}
+.scmSearchItem:hover{background:rgba(125,255,157,.08)}
+.scmSearchItem small{display:block;color:rgba(255,193,129,.55);font-size:11px;margin-top:2px}
+.scmCurrent{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 13px;border:1px solid rgba(125,255,157,.3);border-radius:10px;background:rgba(125,255,157,.07);margin-bottom:8px}
+.scmCurrent b{color:#7dff9d;font-size:13px}
+.scmCurrent small{display:block;color:rgba(255,193,129,.6);font-size:11px}
+
+/* ── POS mirror ledger ── */
+.posSettleBar{display:flex;align-items:center;justify-content:space-between;gap:16px;border:1px solid rgba(255,150,56,.28);border-radius:14px;background:rgba(255,150,56,.06);padding:14px 18px;margin-bottom:16px}
+.posSettleBar b{display:block;color:#ffc181;font-size:14px;margin-bottom:3px}
+.posSettleBar span{display:block;color:rgba(255,193,129,.55);font-size:12px}
+.trackTag{padding:3px 9px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.04em;white-space:nowrap}
+.trackTag.physical{color:#ffc181;border:1px solid rgba(255,193,129,.3);background:rgba(255,150,56,.08)}
+.trackTag.pos{color:#82cfff;border:1px solid rgba(130,207,255,.35);background:rgba(130,207,255,.1)}
+.mirrorHead,.mirrorRow{display:grid;grid-template-columns:1.6fr .8fr 1.1fr 1.1fr .9fr .8fr .9fr .9fr;align-items:center;padding:0 12px;gap:8px}
+.mirrorHead{background:rgba(231,127,34,.08);border-bottom:1px solid rgba(231,127,34,.2);height:44px}
+.mirrorHead span{color:#ffc181;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.mirrorRow{min-height:54px;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;color:rgba(255,255,255,.82)}
+.mirrorRow:hover{background:rgba(231,127,34,.05)}
+.ordHead,.ordRow{display:grid;grid-template-columns:1.2fr .8fr 1.8fr .5fr .8fr .8fr .8fr;align-items:center;padding:0 12px;gap:8px}
+.ordHead{background:rgba(231,127,34,.08);border-bottom:1px solid rgba(231,127,34,.2);height:42px}
+.ordHead span{color:#ffc181;font-size:11px;font-weight:700;text-transform:uppercase}
+.ordRow{min-height:46px;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;color:rgba(255,255,255,.82)}
+.setlHead,.setlRow{display:grid;grid-template-columns:1.3fr 1.5fr .9fr .9fr 1fr .8fr 1fr;align-items:center;padding:0 12px;gap:8px}
+.setlHead{background:rgba(231,127,34,.08);border-bottom:1px solid rgba(231,127,34,.2);height:42px}
+.setlHead span{color:#ffc181;font-size:11px;font-weight:700;text-transform:uppercase}
+.setlRow{min-height:46px;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;color:rgba(255,255,255,.82)}
+.posRepHead,.posRepRow{display:grid;grid-template-columns:1.8fr 1.4fr .9fr .5fr .8fr .9fr .9fr .5fr;align-items:center;padding:0 12px;gap:8px}
+.posRepHead{background:rgba(231,127,34,.08);border-bottom:1px solid rgba(231,127,34,.2);height:44px}
+.posRepHead span{color:#ffc181;font-size:11px;font-weight:700;text-transform:uppercase}
+.posRepRow{min-height:52px;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;color:rgba(255,255,255,.82)}
+.posSplitRow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.posSplit{border:1px solid rgba(255,150,56,.2);border-radius:12px;background:rgba(0,0,0,.25);padding:14px 16px}
+.posSplit>b{display:block;color:#ffc181;font-size:13px;margin-bottom:8px}
+.posSplit p{display:flex;justify-content:space-between;margin:5px 0;font-size:13px}
+.posSplit p span{color:rgba(255,193,129,.65)}
+.posSplit p b{color:#fff2e2}
+/* sales report now carries POS + variance */
+.salesHead,.salesRow{grid-template-columns:1.3fr .7fr .7fr .7fr .5fr .7fr .9fr .6fr .9fr .85fr .9fr .9fr .8fr .85fr}
+
+/* ── Dashboard card that is present but not yet usable ── */
+.dashCard.dashCardOff{
+  border-color:rgba(255,255,255,.14);
+  background:linear-gradient(145deg,rgba(14,13,12,.4),rgba(34,32,30,.16));
+  box-shadow:none;
+  cursor:default;
+  opacity:.4;
+  filter:grayscale(1);
+}
+.dashCard.dashCardOff span{color:rgba(255,255,255,.55)}
+.dashCard.dashCardOff .dashIcon{color:rgba(255,255,255,.55)}
+/* the global disabled rule would double up on the opacity above */
+.dashCard.dashCardOff:disabled{opacity:.4;cursor:default}
+/* ── Product table: Full Wt. column removed (edit it from Edit Bottle) ── */
+.prodHead,.prodRow{grid-template-columns:2fr 1fr .8fr 1fr .9fr 52px}
+
+/* ── Recent inventory with POS comparison ── */
+.recentTable.recentPos{overflow:auto}
+.recentPos .recentHead,.recentPos .recentRow{grid-template-columns:1.6fr .6fr .8fr .6fr .8fr .95fr .9fr .75fr .9fr .9fr .75fr;min-width:1120px}
+
+/* ── Count result: physical vs POS ── */
+.posResult{margin:14px 0 4px;border:1.5px solid rgba(255,168,96,.34);border-radius:14px;padding:16px 18px;background:linear-gradient(180deg,rgba(58,36,17,.55),rgba(12,8,5,.85));color:#ffc181;display:flex;flex-direction:column;gap:10px}
+.posResult>b{color:#fff2e2}
+.posResult>small{color:rgba(255,193,129,.6)}
+.posResultGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.posResultGrid div{border:1px solid rgba(255,150,56,.2);border-radius:10px;padding:10px 12px;background:rgba(0,0,0,.25)}
+.posResultGrid span{display:block;font-size:12px;text-transform:uppercase;color:rgba(255,202,148,.85)}
+.posResultGrid b{display:block;font-size:22px;color:#ff9b3d;margin-top:6px}
+.posResultGrid small{display:block;color:rgba(255,255,255,.5);margin-top:4px}
+@media(max-width:1000px){.posResultGrid{grid-template-columns:1fr 1fr}}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   Dropdowns — one look for every <select> in the app
+   (!important is needed to beat the inline `background:` some selects carry)
+   ════════════════════════════════════════════════════════════════════════════ */
+select:not(.metricHeadSelect):not([multiple]){
+  appearance:none!important;-webkit-appearance:none!important;-moz-appearance:none!important;
+  color-scheme:dark;                       /* dark native option list */
+  background-color:rgba(12,7,3,.62);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23ff9638' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 7.5l5 5 5-5'/%3E%3C/svg%3E")!important;
+  background-repeat:no-repeat!important;
+  background-position:right 14px center!important;
+  background-size:16px 16px!important;
+  padding-right:42px!important;
+  border:1.5px solid rgba(231,127,34,.5);
+  border-radius:12px;
+  color:#ffe0bd;
+  font-weight:600;
+  cursor:pointer;
+  transition:border-color .15s ease,box-shadow .15s ease,background-color .15s ease;
+  text-overflow:ellipsis;white-space:nowrap;overflow:hidden;
+}
+select:not(.metricHeadSelect):not([multiple]):hover:not(:disabled){border-color:rgba(255,150,56,.85);background-color:rgba(40,22,8,.7)}
+select:not(.metricHeadSelect):not([multiple]):focus{outline:none;border-color:#ff9638;box-shadow:0 0 0 3px rgba(255,150,56,.18)}
+select:not(.metricHeadSelect):disabled{cursor:not-allowed;opacity:.45}
+select option,select optgroup{background:#1a0e06;color:#ffe0bd;font-weight:500}
+select option:checked{background:#5b2e0e;color:#fff}
+select option:disabled{color:rgba(255,224,189,.35)}
+/* the Select component and modal selects keep their sizes */
+.selectBox,select.selectBox{background-color:rgba(18,11,5,.7)}
+.modalSelect{height:50px;width:100%;padding:0 16px;font-size:15px}
+
+/* ── Card action buttons (keg registry + pre-batch bottles): wrap, never overflow ── */
+.pbCardActions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pbCardActions button{height:auto;min-height:36px;padding:7px 12px;flex:1 1 auto;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;line-height:1.2;font-size:13px;font-weight:600}
+.kegCard,.pbBottleCard{min-width:0}
+
+/* ── History tables: status/event pills sit at their natural width ── */
+.pbHistHead,.pbHistRow{column-gap:14px}
+.pbHistRow .kegPill,.pbHistRow .pbStatusPill{display:inline-block;width:auto;max-width:100%;text-transform:capitalize;text-align:center}
+
+/* ── Pre-batch: Create Bottles rows line up inside the card ── */
+.pbProduceForm{max-width:980px}
+.pbBottleRow{grid-template-columns:48px repeat(3,minmax(0,1fr)) 36px;align-items:end}
+.pbBottleRow .addBottleField{min-width:0}
+.pbBottleRow .addBottleField input{width:100%;min-width:0;box-sizing:border-box}
+.pbBottleRow .pbBottleTag{align-self:end;height:50px;display:flex;align-items:center;justify-content:center;padding:0}
+.pbBottleRow .pbRemoveBtn{margin-top:0!important;align-self:end;height:50px}
+@media(max-width:700px){.pbBottleRow{grid-template-columns:1fr}.pbBottleRow .pbBottleTag{justify-content:flex-start;height:auto}}
+
+/* ── Inventory: pre-batch tag + keg POS note ── */
+.pbInvTag{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.06em;color:#82cfff;border:1px solid rgba(130,207,255,.4);border-radius:999px;padding:2px 7px;margin-right:6px;vertical-align:middle}
+.kegPosNote{margin:0 0 14px;padding:10px 12px;border:1px solid rgba(100,220,120,.3);border-radius:10px;background:rgba(50,150,60,.1);color:#9dffb5;font-size:13px}
